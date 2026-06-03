@@ -398,6 +398,39 @@
         .alias-text { font-weight: 700; color: white; letter-spacing: 1px; }
         .copy-btn { background: #444; border: none; color: white; padding: 5px 10px; border-radius: 2px; font-size: 0.7rem; cursor: pointer; }
 
+        /* FERNET SIDEBAR */
+        .fernet-sidebar {
+            position: fixed;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 120px;
+            z-index: 9000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            pointer-events: auto;
+        }
+        .fernet-inner { display:flex; flex-direction:column; align-items:center; }
+        .fernet-bottle-wrapper { width: 120px; height: 260px; display:flex; align-items:center; justify-content:center; }
+        #fernet-bottle-img { width: 100%; height: auto; transform-origin: 50% 50%; animation: spin 6s linear infinite; border-radius:6px; box-shadow: 0 10px 30px rgba(0,0,0,0.6); background: #fff; padding:6px; }
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        .fernet-thumbs { display:flex; flex-direction:column; gap:8px; margin-top:6px; }
+        .fernet-bottle-ring { position: relative; width: 140px; height: 300px; display:flex; align-items:center; justify-content:center; }
+        .fernet-markers { position: absolute; top: 50%; left: 50%; width: 220px; height: 220px; transform: translate(-50%, -50%); pointer-events: none; }
+        .fernet-marker { position: absolute; width:48px; height:48px; border-radius:50%; overflow:hidden; background:#111; display:flex; align-items:center; justify-content:center; box-shadow: 0 6px 18px rgba(0,0,0,0.6); cursor:pointer; pointer-events: auto; border:2px solid rgba(255,255,255,0.06); transition: transform 0.18s, border-color 0.18s; }
+        .fernet-marker img { width:100%; height:100%; object-fit:cover; display:block; }
+        .fernet-marker:hover { transform: scale(1.08); border-color: var(--primary-white); }
+        .fernet-origin { margin-top: 12px; max-width: 160px; text-align: center; color: #ddd; }
+        .fernet-origin-text { font-size: 0.72rem; color: #bbb; opacity: 0.95; margin-top:6px; }
+        .fernet-thumb { width:46px; height:46px; object-fit:cover; border-radius:4px; cursor:pointer; border:2px solid transparent; }
+        .fernet-thumb.active { border-color: var(--primary-white); box-shadow: 0 6px 18px rgba(0,0,0,0.6); }
+        .fernet-nav { display:flex; gap:6px; margin-top:8px; }
+        .fernet-prev, .fernet-next { background: rgba(255,255,255,0.06); border: 1px solid #333; color: #fff; width:32px; height:32px; border-radius:6px; cursor:pointer; }
+
+        @media (max-width: 768px) { .fernet-sidebar { display: none; } }
+
         /* MEDIA QUERY */
         @media (min-width: 769px) {
             .menu-toggle { display: none; }
@@ -450,6 +483,27 @@
             <i class="fas fa-bars menu-toggle" onclick="toggleSidebar()"></i>
         </div>
     </header>
+
+    <!-- SIDEBAR FERNET ROTATOR -->
+    <div id="fernet-sidebar" class="fernet-sidebar" aria-hidden="false" onclick="event.stopPropagation()">
+        <div class="fernet-inner">
+            <div class="fernet-bottle-ring">
+                <div class="fernet-bottle-wrapper">
+                    <img id="fernet-bottle-img" src="img/fernet-bottle.png" alt="Fernet" onerror="this.src='https://via.placeholder.com/120x260?text=F'">
+                </div>
+                <div id="fernet-markers" class="fernet-markers" aria-hidden="false"></div>
+            </div>
+            <div id="fernet-thumbs" class="fernet-thumbs" aria-hidden="true"></div>
+            <div class="fernet-nav">
+                <button class="fernet-prev" onclick="fernetPrev()">‹</button>
+                <button class="fernet-next" onclick="fernetNext()">›</button>
+            </div>
+            <div class="fernet-origin" id="fernet-origin">
+                <div class="section-tag">ORIGEN</div>
+                <div class="fernet-origin-text serif-font">El Fernet tiene raíces italianas, popularizado en el siglo XIX como digestivo; aquí celebramos su historia y tradición en cada sorbo.</div>
+            </div>
+        </div>
+    </div>
 
     <div id="home-view">
         <section class="hero-section" id="hero-carousel">
@@ -735,6 +789,7 @@
                     // Filtramos filas sin nombre
                     products = parsed.filter(p => p.name && p.name.length > 0);
                     renderElaboradosCarousel(); // Renderizar carrusel al cargar
+                    renderFernetSidebar(); // Renderizar sidebar fernet
                     showHome(); // Iniciamos la app una vez que hay datos
                 },
                 error: function(err) {
@@ -958,6 +1013,92 @@
                 
                 carousel.appendChild(card);
             });
+        }
+
+        // FERNET SIDEBAR RENDER
+        let fernetIndex = 0;
+        function renderFernetSidebar() {
+            const sidebar = document.getElementById('fernet-sidebar');
+            const thumbsContainer = document.getElementById('fernet-thumbs');
+            const bottleImg = document.getElementById('fernet-bottle-img');
+            if(!sidebar || !thumbsContainer || !bottleImg) return;
+
+            // Seleccionar solo productos de fernet que tengan promo definida
+            const fernetProducts = products.filter(p => {
+                const c = (p.category || '').toString().trim().toLowerCase();
+                const n = (p.name || '').toString().toLowerCase();
+                const hasPromo = (p.promoQty && p.promoQty !== '') || (p.promoPrice && p.promoPrice !== '');
+                return (c === 'fernet' || n.includes('fernet')) && hasPromo;
+            });
+
+            if (fernetProducts.length === 0) {
+                // si no hay promos, ocultar sidebar discreto
+                sidebar.style.display = 'none';
+                return;
+            }
+
+            sidebar.style.display = 'flex';
+            // Usar imagen del primer producto como botella si existe
+            const first = fernetProducts[0];
+            const firstImg = first && first.img ? (first.img.startsWith('http') ? first.img : RUTA_IMG + first.img) : 'img/fernet-bottle.png';
+            bottleImg.src = firstImg;
+
+            // Render marcadores alrededor de la botella con imágenes de las promos
+            const markersContainer = document.getElementById('fernet-markers');
+            markersContainer.innerHTML = '';
+
+            const maxMarkers = Math.min(8, fernetProducts.length);
+            const radius = 90; // radio en px para los marcadores
+
+            for (let i = 0; i < maxMarkers; i++) {
+                const p = fernetProducts[i];
+                const angle = (i / maxMarkers) * Math.PI * 2 - Math.PI / 2; // iniciar arriba
+                const x = 50 + (Math.cos(angle) * radius) / markersContainer.clientWidth * 100;
+                const y = 50 + (Math.sin(angle) * radius) / markersContainer.clientHeight * 100;
+
+                const marker = document.createElement('div');
+                marker.className = 'fernet-marker';
+                marker.style.left = x + '%';
+                marker.style.top = y + '%';
+                marker.title = p.name;
+
+                const img = document.createElement('img');
+                img.src = p.img && p.img.length ? (p.img.startsWith('http') ? p.img : RUTA_IMG + p.img) : 'https://via.placeholder.com/48';
+                marker.appendChild(img);
+
+                marker.onclick = (e) => {
+                    e.stopPropagation();
+                    // Detener animación momentáneamente para destacar la promo
+                    bottleImg.style.animation = 'none';
+                    setTimeout(() => bottleImg.style.animation = '', 200);
+                    bottleImg.src = img.src;
+                    // resaltar marker
+                    document.querySelectorAll('.fernet-marker').forEach(m => m.style.borderColor = 'rgba(255,255,255,0.06)');
+                    marker.style.borderColor = 'var(--primary-white)';
+                    // mostrar tienda filtrada en fernet
+                    showShop('fernet');
+                };
+
+                markersContainer.appendChild(marker);
+            }
+        }
+
+        function highlightFernetThumb(i) {
+            document.querySelectorAll('.fernet-thumb').forEach((el, idx) => el.classList.toggle('active', idx === i));
+        }
+
+        function fernetNext() {
+            const thumbs = document.querySelectorAll('.fernet-thumb');
+            if(thumbs.length === 0) return;
+            fernetIndex = (fernetIndex + 1) % thumbs.length;
+            thumbs[fernetIndex].click();
+        }
+
+        function fernetPrev() {
+            const thumbs = document.querySelectorAll('.fernet-thumb');
+            if(thumbs.length === 0) return;
+            fernetIndex = (fernetIndex - 1 + thumbs.length) % thumbs.length;
+            thumbs[fernetIndex].click();
         }
         
         function renderShopPage() {
