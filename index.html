@@ -200,13 +200,478 @@
 
         /* VISTA HOME */
         #home-view {
-            background-image: 
-                radial-gradient(ellipse at center, transparent 0%, rgba(0, 0, 0, 0.05) 100%),
-                url('https://images.unsplash.com/photo-1516634547200-d4f68cdfb3a3?w=1600&h=900&fit=crop');
+            background-color: #050809;
+            background-image:
+                linear-gradient(135deg, rgba(2, 6, 11, 0.96), rgba(8, 15, 23, 0.94)),
+                url('https://e3.365dm.com/22/12/1600x900/skynews-argentina-world-cup_6002268.jpg?20221220170546');
             background-size: cover;
             background-position: center;
-            background-attachment: fixed;
+            background-repeat: no-repeat;
+            color: #f3f1ef;
             min-height: 100vh;
+            position: relative;
+            overflow: hidden;
+        }
+        #home-view::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: url('img/logo-luto.png');
+            background-size: 140px;
+            background-repeat: repeat;
+            opacity: 0.05;
+            pointer-events: none;
+        }
+        #home-view::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, rgba(5, 11, 18, 0.12) 0%, rgba(5, 11, 18, 0.02) 30%, rgba(5, 11, 18, 0.22) 55%, rgba(5, 11, 18, 0.92) 100%);
+            pointer-events: none;
+            z-index: 0;
+        }
+        #confetti {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 1;
+        }
+        .hero-branca {
+            position: relative;
+            z-index: 2;
+        }
+        .confetti-piece {
+            position: absolute;
+            width: 10px;
+            height: 18px;
+            opacity: 0.9;
+            border-radius: 2px;
+            mix-blend-mode: screen;
+            filter: drop-shadow(0 0 12px rgba(255,255,255,0.15));
+            animation: confetti-fall linear infinite;
+        }
+        @keyframes confetti-fall {
+            0% { transform: translateY(-10px) rotate(0deg); opacity: 0.9; }
+            100% { transform: translateY(110vh) rotate(360deg); opacity: 0.2; }
+        }
+        .hero-branca .hero-scaloneta {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 18px;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 24px;
+            padding: 20px;
+            margin-top: 30px;
+        }
+        .hero-branca .hero-scaloneta-art {
+            position: relative;
+            width: 160px;
+            height: 110px;
+            border-radius: 24px;
+            background: linear-gradient(180deg, #f8fafb 0%, #dbe9f7 100%);
+            border: 1px solid rgba(255,255,255,0.2);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.25);
+            overflow: hidden;
+        }
+        .scaloneta-bus {
+            position: absolute;
+            left: 10px;
+            top: 28px;
+            width: 140px;
+            height: 52px;
+            background: #ffffff;
+            border-radius: 18px 18px 12px 12px;
+            box-shadow: inset 0 0 0 2px rgba(11, 54, 105, 0.2);
+        }
+        .scaloneta-bus::before {
+            content: '';
+            position: absolute;
+            left: 8px;
+            top: 8px;
+            width: 120px;
+            height: 22px;
+            border-radius: 10px;
+            background: linear-gradient(90deg, #8cc8ff 0%, #ffffff 20%, #ffffff 80%, #8cc8ff 100%);
+        }
+        .scaloneta-bus::after {
+            content: '';
+            position: absolute;
+            left: 10px;
+            top: 34px;
+            width: 26px;
+            height: 12px;
+            background: rgba(11, 54, 105, 0.85);
+            border-radius: 6px;
+        }
+        .scaloneta-wheel {
+            position: absolute;
+            bottom: 16px;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: #0b3669;
+            box-shadow: inset 0 0 0 4px #cfe6ff;
+        }
+        .scaloneta-wheel-left { left: 22px; }
+        .scaloneta-wheel-right { right: 22px; }
+        .scaloneta-window {
+            position: absolute;
+            left: 24px;
+            top: 24px;
+            width: 30px;
+            height: 24px;
+            border-radius: 8px;
+            background: rgba(255,255,255,0.82);
+            box-shadow: inset 0 0 0 1px rgba(0,0,0,0.08);
+        }
+        .scaloneta-flag {
+            position: absolute;
+            right: 16px;
+            top: 12px;
+            width: 36px;
+            height: 18px;
+            background: linear-gradient(90deg, #ffffff 33%, #5cc2ff 33%, #5cc2ff 66%, #ffffff 66%);
+            border: 1px solid rgba(0,0,0,0.08);
+            border-radius: 4px;
+        }
+        .hero-branca .hero-scaloneta-text {
+            color: #eef1f5;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            max-width: 480px;
+        }
+        .hero-branca .hero-scaloneta-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 14px;
+            border-radius: 999px;
+            background: rgba(255,255,255,0.12);
+            color: #ffffff;
+            border: 1px solid rgba(255,255,255,0.14);
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        .hero-branca {
+            position: relative;
+            z-index: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 80px 20px 80px 20px;
+            display: grid;
+            grid-template-columns: minmax(280px, 1fr) minmax(320px, 420px);
+            gap: 40px;
+            align-items: center;
+        }
+        .hero-branca {
+            position: relative;
+            z-index: 1;
+        }
+        .hero-branca .hero-copy {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            padding: 32px;
+            border-radius: 32px;
+            overflow: visible;
+            background: rgba(0,0,0,0.14);
+            border: 1px solid rgba(255,255,255,0.14);
+            backdrop-filter: blur(10px);
+        }
+        .hero-branca .hero-copy::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            width: 120vw;
+            height: calc(100% + 32px);
+            transform: translateX(-50%);
+            z-index: 0;
+            background-image:
+                linear-gradient(270deg, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.10) 35%, rgba(0,0,0,0) 100%),
+                url('https://e3.365dm.com/22/12/1600x900/skynews-argentina-world-cup_6002268.jpg?20221220170546');
+            background-size: cover;
+            background-position: center right;
+            opacity: 0.45;
+            filter: brightness(1.05) saturate(1.15);
+            border-radius: 0 0 48px 48px;
+            pointer-events: none;
+        }
+        .hero-branca .hero-copy > * {
+            position: relative;
+            z-index: 1;
+        }
+        .hero-branca .hero-eyebrow {
+            display: inline-block;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-weight: 700;
+            color: #b0b0a6;
+            font-size: 0.78rem;
+        }
+        .hero-branca .hero-title {
+            font-size: clamp(3rem, 5vw, 4.6rem);
+            line-height: 0.95;
+            letter-spacing: -0.04em;
+            margin: 0;
+            font-family: 'Playfair Display', serif;
+            color: #fff;
+            text-transform: uppercase;
+            padding: 0;
+            border-radius: 0;
+            overflow: visible;
+        }
+        .hero-branca .hero-title::before {
+            display: none;
+        }
+        .hero-branca .hero-copy p {
+            max-width: 560px;
+            color: #d6d4cf;
+            line-height: 1.7;
+            font-size: 1rem;
+            opacity: 0.95;
+        }
+        .hero-branca .hero-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-top: 20px;
+        }
+        .hero-branca .hero-actions .btn-primary {
+            flex: 1;
+            min-width: 180px;
+            text-align: center;
+            background: #f2f0e8;
+            color: #090b0e;
+            border: none;
+            padding: 16px 34px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            border-radius: 999px;
+            box-shadow: 0 14px 40px rgba(0,0,0,0.18);
+        }
+        .hero-branca .hero-actions .btn-secondary {
+            background: transparent;
+            color: #f2f0e8;
+            border: 1px solid rgba(242,240,232,0.32);
+            padding: 16px 34px;
+            border-radius: 999px;
+        }
+        .hero-story {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 40px;
+            margin-top: 40px;
+            width: 100%;
+        }
+        .hero-story-text {
+            flex: 1.5;
+            display: flex;
+            flex-direction: column;
+            gap: 28px;
+        }
+        .hero-section-block h2 {
+            margin: 0 0 16px 0;
+            font-size: clamp(2rem, 3vw, 2.6rem);
+            letter-spacing: -0.04em;
+            text-transform: uppercase;
+            color: #fff;
+        }
+        .hero-section-block p {
+            margin: 0;
+            color: #d6d4cf;
+            font-size: 1rem;
+            line-height: 1.8;
+            max-width: 640px;
+        }
+        .hero-story-image {
+            flex: 1;
+            min-width: 320px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .hero-story-image img {
+            width: 100%;
+            max-width: 420px;
+            height: auto;
+            border-radius: 28px;
+            object-fit: cover;
+            box-shadow: 0 30px 80px rgba(0,0,0,0.35);
+        }
+        .hero-description {
+            margin: 0;
+            max-width: 760px;
+            color: rgba(242,240,232,0.92);
+            font-size: 1.05rem;
+            line-height: 1.8;
+        }
+        .mascot-img {
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+        }
+        .floating-mascot {
+            position: fixed;
+            right: 14px;
+            bottom: 140px;
+            width: 90px;
+            max-width: 90px;
+            max-height: 140px;
+            z-index: 10002;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            animation: mascot-bounce 4.5s ease-in-out infinite, mascot-blink 4.2s step-start infinite;
+            pointer-events: none;
+        }
+        .floating-mascot img {
+            width: 100%;
+            height: auto;
+            max-height: 140px;
+            object-fit: contain;
+        }
+        /* eye-mask removed per request */
+        .hero-simple-row {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            width: 100vw;
+            left: 50%;
+            right: 50%;
+            margin-left: -50vw;
+            margin-right: -50vw;
+            min-height: 320px;
+            margin-top: 0;
+            padding: 60px 6vw;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            overflow: hidden;
+            border-radius: 0;
+            box-shadow: none;
+        }
+        .hero-simple-row.reverse {
+            justify-content: flex-end;
+        }
+        .hero-simple-row.reverse .hero-simple-copy {
+            text-align: right;
+        }
+        .hero-simple-row::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(8, 8, 8, 0.55) 0%, rgba(8, 8, 8, 0.22) 24%, rgba(8, 8, 8, 0) 42%, rgba(8, 8, 8, 0.55) 100%);
+            pointer-events: none;
+            mix-blend-mode: multiply;
+        }
+        .hero-simple-row .hero-simple-copy {
+            position: relative;
+            z-index: 2;
+            max-width: 760px;
+        }
+        .hero-simple-row h2 {
+            margin: 0 0 14px 0;
+            color: #fff;
+            font-size: clamp(2rem, 3vw, 3rem);
+            line-height: 1.05;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .hero-simple-row p {
+            margin: 0;
+            color: rgba(255,255,255,0.92);
+            font-size: 1rem;
+            line-height: 1.85;
+            max-width: 680px;
+        }
+        .hero-simple-row.hero-bg-1 { background-image: linear-gradient(rgba(0,0,0,0.18), rgba(0,0,0,0.18)), url('img/portada1.jpg'); }
+        .hero-simple-row.hero-bg-2 { background-image: linear-gradient(rgba(0,0,0,0.18), rgba(0,0,0,0.18)), url('img/portada2.jpg'); }
+        .hero-simple-row.hero-bg-3 { background-image: linear-gradient(rgba(0,0,0,0.18), rgba(0,0,0,0.18)), url('img/portada3.jpg'); }
+        .hero-simple-row.hero-bg-4 { background-image: linear-gradient(rgba(0,0,0,0.18), rgba(0,0,0,0.18)), url('img/fernet750.png'); }
+        @keyframes mascot-bounce {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-6px) scale(1.01); }
+        }
+        @keyframes mascot-blink {
+            0%, 80%, 100% { opacity: 1; }
+            85%, 95% { opacity: 0.85; }
+        }
+        .hero-branca .hero-image {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding-top: 24px;
+        }
+        .hero-branca .hero-image img {
+            width: 100%;
+            max-width: 260px;
+            height: auto;
+            border-radius: 24px;
+            box-shadow: 0 28px 70px rgba(0,0,0,0.35);
+            object-fit: contain;
+            margin: 0 auto;
+        }
+        .hero-card-image {
+            width: 100%;
+            max-width: 160px;
+            height: auto;
+            display: block;
+            margin: 18px auto;
+            border-radius: 18px;
+            box-shadow: 0 18px 40px rgba(0,0,0,0.28);
+            object-fit: cover;
+        }
+        .hero-branca .hero-info-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(120px, 1fr));
+            gap: 16px;
+            margin-top: 60px;
+        }
+        .hero-branca .hero-info-card {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.09);
+            border-radius: 18px;
+            padding: 24px;
+            color: #f2f2ed;
+            min-height: 150px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .hero-branca .hero-info-card h3 {
+            margin: 0 0 10px 0;
+            font-size: 1rem;
+            letter-spacing: 1px;
+            opacity: 0.85;
+            text-transform: uppercase;
+        }
+        .hero-branca .hero-info-card p {
+            margin: 0;
+            color: #d6d4cf;
+            line-height: 1.65;
+            opacity: 0.92;
+        }
+        @media (max-width: 980px) {
+            .hero-branca { grid-template-columns: 1fr; padding: 60px 18px; }
+            .hero-branca .hero-image { min-height: 420px; }
+            .hero-branca .hero-info-grid { grid-template-columns: 1fr; }
+            .hero-story, .hero-simple-row { flex-direction: column; }
+            .hero-story-image, .hero-simple-copy { width: 100%; }
+            .hero-story { gap: 24px; }
+        }
+        @media (max-width: 640px) {
+            .hero-branca { padding: 40px 16px; }
+            .hero-branca .hero-title { font-size: 2.6rem; }
+            .hero-branca .hero-actions { flex-direction: column; }
         }
 
         /* VISTA TIENDA */
@@ -214,13 +679,11 @@
             display: none; 
             padding-top: 20px; 
             min-height: 80vh;
-            background-color: var(--dark-bg-main);
-            background-image: 
-                radial-gradient(ellipse at center, transparent 0%, rgba(0, 0, 0, 0.05) 100%),
-                url('https://images.unsplash.com/photo-1516634547200-d4f68cdfb3a3?w=1600&h=900&fit=crop');
+            background: linear-gradient(180deg, rgba(7,7,7,0.98) 0%, rgba(18,18,18,0.98) 100%);
+            background-image: radial-gradient(circle at top center, rgba(255,255,255,0.05), transparent 30%),
+                              radial-gradient(circle at bottom left, rgba(255,255,255,0.03), transparent 28%);
             background-size: cover;
             background-position: center;
-            background-attachment: fixed;
         }
 
         /* BARRA DE BÚSQUEDA */
@@ -335,35 +798,85 @@
         }
 
         /* FLOATING BTN */
+.floating-order-container {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            width: auto;
+            z-index: 9990;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            pointer-events: none;
+        }
         .floating-order-btn {
-            position: fixed; bottom: 25px; left: 5%; width: 90%;
+            width: auto;
+            min-width: 180px;
+            max-width: 260px;
             background-color: var(--primary-white); color: var(--dark-bg-main);
-            border: none; padding: 16px; border-radius: 4px;
+            border: none; padding: 16px 24px; border-radius: 6px;
             font-weight: 700; box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-            cursor: pointer; z-index: 9990; 
+            cursor: pointer; 
             display: flex; justify-content: center; align-items: center; gap: 12px;
             font-size: 0.9rem; text-transform: uppercase; letter-spacing: 2px;
+            pointer-events: auto;
         }
-        
+        .floating-mascot {
+            position: absolute;
+            right: 12px;
+            bottom: calc(100% - 6px);
+            width: 118px;
+            max-width: 118px;
+            max-height: 150px;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            transform: scaleX(-1);
+            animation: mascot-bounce 4.5s ease-in-out infinite, mascot-blink 4.2s step-start infinite;
+            pointer-events: none;
+        }
+        .floating-mascot img {
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+        }
+        .left-mascot {
+            position: absolute; left: 0; top: 0; width: auto; z-index: 10; display: block; pointer-events: none;
+            opacity: 0; transform: translateX(-18px) scale(0.98); transition: opacity 420ms cubic-bezier(.2,.9,.2,1), transform 520ms cubic-bezier(.2,.9,.2,1);
+            will-change: transform, opacity;
+        }
+        .left-mascot.enter { opacity: 1; transform: translateX(0) scale(1); }
+        .left-mascot.mascot-bounce.enter { animation: mascotBounce 620ms cubic-bezier(.2,.9,.2,1); }
+        @keyframes mascotBounce { 0% { transform: translateX(-18px) translateY(0) scale(0.98); } 60% { transform: translateX(6px) translateY(-6px) scale(1.02); } 100% { transform: translateX(0) translateY(0) scale(1); } }
+        .mascot-img { width: 160px; height: auto; display: block; pointer-events: none; background: transparent; mix-blend-mode: multiply; }
+        /* left mascot bubble removed: text is integrated in the new image */
+
         /* MOBILE - Botón circular en lado derecho */
         @media (max-width: 768px) {
+            .floating-order-container {
+                left: auto;
+                right: 20px;
+                width: auto;
+                bottom: 24px;
+            }
             .floating-order-btn {
                 width: 60px;
                 height: 60px;
                 padding: 0;
                 border-radius: 50%;
-                right: 20px;
-                left: auto;
-                bottom: 25px;
                 gap: 0;
             }
-            
             #float-btn-text {
                 display: none;
             }
-            
             .floating-order-btn i {
                 font-size: 1.5rem;
+            }
+            .floating-mascot {
+                right: 0;
+                bottom: 100%;
+                width: 70px;
+                max-height: 100px;
             }
         }
 
@@ -398,39 +911,6 @@
         .alias-text { font-weight: 700; color: white; letter-spacing: 1px; }
         .copy-btn { background: #444; border: none; color: white; padding: 5px 10px; border-radius: 2px; font-size: 0.7rem; cursor: pointer; }
 
-        /* FERNET SIDEBAR */
-        .fernet-sidebar {
-            position: fixed;
-            left: 12px;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 120px;
-            z-index: 9000;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 8px;
-            pointer-events: auto;
-        }
-        .fernet-inner { display:flex; flex-direction:column; align-items:center; }
-        .fernet-bottle-wrapper { width: 120px; height: 260px; display:flex; align-items:center; justify-content:center; }
-        #fernet-bottle-img { width: 100%; height: auto; transform-origin: 50% 50%; animation: spin 6s linear infinite; border-radius:6px; box-shadow: 0 10px 30px rgba(0,0,0,0.6); background: #fff; padding:6px; }
-        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-        .fernet-thumbs { display:flex; flex-direction:column; gap:8px; margin-top:6px; }
-        .fernet-bottle-ring { position: relative; width: 140px; height: 300px; display:flex; align-items:center; justify-content:center; }
-        .fernet-markers { position: absolute; top: 50%; left: 50%; width: 220px; height: 220px; transform: translate(-50%, -50%); pointer-events: none; }
-        .fernet-marker { position: absolute; width:48px; height:48px; border-radius:50%; overflow:hidden; background:#111; display:flex; align-items:center; justify-content:center; box-shadow: 0 6px 18px rgba(0,0,0,0.6); cursor:pointer; pointer-events: auto; border:2px solid rgba(255,255,255,0.06); transition: transform 0.18s, border-color 0.18s; }
-        .fernet-marker img { width:100%; height:100%; object-fit:cover; display:block; }
-        .fernet-marker:hover { transform: scale(1.08); border-color: var(--primary-white); }
-        .fernet-origin { margin-top: 12px; max-width: 160px; text-align: center; color: #ddd; }
-        .fernet-origin-text { font-size: 0.72rem; color: #bbb; opacity: 0.95; margin-top:6px; }
-        .fernet-thumb { width:46px; height:46px; object-fit:cover; border-radius:4px; cursor:pointer; border:2px solid transparent; }
-        .fernet-thumb.active { border-color: var(--primary-white); box-shadow: 0 6px 18px rgba(0,0,0,0.6); }
-        .fernet-nav { display:flex; gap:6px; margin-top:8px; }
-        .fernet-prev, .fernet-next { background: rgba(255,255,255,0.06); border: 1px solid #333; color: #fff; width:32px; height:32px; border-radius:6px; cursor:pointer; }
-
-        @media (max-width: 768px) { .fernet-sidebar { display: none; } }
-
         /* MEDIA QUERY */
         @media (min-width: 769px) {
             .menu-toggle { display: none; }
@@ -445,7 +925,7 @@
             .info-image { height: auto; min-height: 500px; width: 50%; }
             .info-text-container { width: 50%; display: flex; flex-direction: column; justify-content: center; padding: 60px; text-align: left; }
             .products-grid { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
-            .floating-order-btn { width: auto; right: 40px; left: auto; bottom: 40px; padding: 18px 40px; }
+            .floating-mascot { right: 20px; bottom: calc(100% + 6px); width: 120px; }
         }
     </style>
 </head>
@@ -484,118 +964,60 @@
         </div>
     </header>
 
-    <!-- SIDEBAR FERNET ROTATOR -->
-    <div id="fernet-sidebar" class="fernet-sidebar" aria-hidden="false" onclick="event.stopPropagation()">
-        <div class="fernet-inner">
-            <div class="fernet-bottle-ring">
-                <div class="fernet-bottle-wrapper">
-                    <img id="fernet-bottle-img" src="img/fernet-bottle.png" alt="Fernet" onerror="this.src='https://via.placeholder.com/120x260?text=F'">
-                </div>
-                <div id="fernet-markers" class="fernet-markers" aria-hidden="false"></div>
-            </div>
-            <div id="fernet-thumbs" class="fernet-thumbs" aria-hidden="true"></div>
-            <div class="fernet-nav">
-                <button class="fernet-prev" onclick="fernetPrev()">‹</button>
-                <button class="fernet-next" onclick="fernetNext()">›</button>
-            </div>
-            <div class="fernet-origin" id="fernet-origin">
-                <div class="section-tag">ORIGEN</div>
-                <div class="fernet-origin-text serif-font">El Fernet tiene raíces italianas, popularizado en el siglo XIX como digestivo; aquí celebramos su historia y tradición en cada sorbo.</div>
-            </div>
-        </div>
-    </div>
-
     <div id="home-view">
-        <section class="hero-section" id="hero-carousel">
-            <button class="carousel-control prev-btn" onclick="prevSlide()">❮</button>
-            <button class="carousel-control next-btn" onclick="nextSlide()">❯</button>
-
-            <div class="carousel-slide active" style="background-image: url('img/portada1.jpg');">
-                <div class="overlay-dark"></div>
-                <div class="slide-content">
-                    <h2 class="slide-title serif-font">Catálogo</h2>
-                    <p class="slide-subtitle">Lo mejor en bebidas, directo a tu puerta.</p>
-                    <button class="btn-mono" onclick="showShop()">VER TIENDA</button>
-                </div>
-            </div>
-            <div class="carousel-slide" style="background-image: url('img/portada3.jpg');">
-                <div class="overlay-dark"></div>
-                <div class="slide-content">
-                    <h2 class="slide-title serif-font">Eventos</h2>
-                    <p class="slide-subtitle">Cubrimos tu fiesta grande o pequeña.</p>
-                    <a href="#section-servicios" class="btn-mono">CONTRATAR</a>
-                </div>
-            </div>
-            <div class="carousel-slide" style="background-image: url('img/portada2.jpg');">
-                <div class="overlay-dark"></div>
-                <div class="slide-content">
-                    <h2 class="slide-title serif-font">Promos</h2>
-                    <p class="slide-subtitle">Ahorrá con nuestras ofertas semanales.</p>
-                    <button class="btn-mono" onclick="showShop()">VER OFERTAS</button>
-                </div>
-            </div>
-        </section>
-
-        <section class="features-bar">
-            <div class="feature-item" onclick="showShop()">
-                <div class="feature-icon-circle">
-                    <i class="fas fa-wine-bottle feature-icon"></i>
-                </div>
-                <div class="feature-title">TIENDA</div>
-            </div>
-            <div class="feature-item" onclick="scrollToSection('section-servicios')">
-                <div class="feature-icon-circle">
-                    <i class="fas fa-concierge-bell feature-icon"></i>
-                </div>
-                <div class="feature-title">SERVICIOS</div>
-            </div>
-            <div class="feature-item" onclick="scrollToSection('section-promociones')">
-                <div class="feature-icon-circle">
-                    <i class="fas fa-percentage feature-icon"></i>
-                </div>
-                <div class="feature-title">PROMOS</div>
-            </div>
-        </section>
-
-        <div id="section-servicios" class="info-section bg-light">
-             <div class="info-text-container">
-                <span class="section-tag">PERSONALIZADO</span>
-                <h2 class="section-heading serif-font">Eventos & Delivery</h2>
-                <p class="section-desc">Nos encargamos de que la bebida no falte. Ofrecemos consignación, enfriado y logística para reuniones de cualquier tamaño.</p>
-                <div style="margin-top:10px;">
-                    <a href="https://wa.me/5493425996090" target="_blank" class="btn-outline-smart">CONSULTAR</a>
-                </div>
-            </div>
-            <div class="info-image" style="background-image: url('img/portada3.jpg');"></div>
-        </div>
-
-        <div id="section-promociones" class="info-section bg-dark">
-            <div class="info-image" style="background-image: url('img/portada2.jpg'); order: -1;"></div>
-            <div class="info-text-container">
-                <span class="section-tag">OPORTUNIDAD</span>
-                <h2 class="section-heading serif-font">Ofertas Semanales</h2>
-                <p class="section-desc">Seleccionamos los mejores precios para que disfrutes sin gastar de más. Packs ideales para el finde.</p>
-                <div style="margin-top:10px;">
-                    <button class="btn-mono" onclick="renderShop('promociones-navidenas', null); showShop()">VER PROMOS</button>
-                </div>
+        <div id="confetti"></div>
+        <div class="hero-branca">
+            <div class="hero-copy">
+                <span class="hero-eyebrow">Luto Bebidas</span>
+                <h1 class="hero-title serif-font">FERNET, ASADO Y PASION</h1>
+                <p class="hero-description">Desde Luto queríamos acompañar tus asados y partidos, con una hermosa tradición. Pedilo y te lo llevamos.</p>
             </div>
         </div>
 
-        <div class="map-section">
+        <div class="hero-branca hero-story">
+            <div class="hero-story-text">
+                <div class="hero-section-block">
+                    <h2>UN ÚNICO FERNET</h2>
+                    <p>Traemos los mejores envíos de Fernet a tu puerta, con servicio exprés y atención personalizada para cada pedido.</p>
+                </div>
+                <div class="hero-section-block">
+                    <h2>ORÍGENES DEL FERNET</h2>
+                    <p>Nacido como digestivo en Italia, el Fernet llegó para quedarse. En Luto celebramos su historia con cada botella y promo.</p>
+                </div>
+            </div>
+            <div class="hero-story-image">
+                <img src="https://acdn.mitiendanube.com/stores/001/278/346/products/bccdb54d-7876-4861-afed-aae5c8665fe01-7a10a92a5b69b3457e16754610379490-1024-1024.jpeg" alt="Vaso de Fernet" />
+            </div>
+        </div>
+
+        <div class="hero-branca hero-simple-row hero-bg-1">
+            <div class="hero-simple-copy">
+                <h2>TRADICIÓN LOCAL</h2>
+                <p>Somos distribuidora santafesina con stock de primeras marcas, packs para eventos y bebidas listas para el after.</p>
+            </div>
+        </div>
+        <div class="hero-branca hero-simple-row hero-bg-2 reverse">
+            <div class="hero-simple-copy">
+                <h2>PROMOS EXCLUSIVAS</h2>
+                <p>Ofertas diarias en Fernet, bebidas y combinados. Verifica nuestras novedades y compras por volumen en tiempo real.</p>
+            </div>
+        </div>
+        <div class="hero-branca hero-simple-row hero-bg-3">
+            <div class="hero-simple-copy">
+                <h2>EVENTOS & DELIVERY</h2>
+                <p>Casamientos, reuniones y eventos corporativos. Organizamos tu barra con servicio y refrigeración según tu necesidad.</p>
+            </div>
+        </div>
+        <div class="hero-branca hero-simple-row hero-bg-4 reverse">
+            <div class="hero-simple-copy">
+                <h2>SEGUÍ TU PEDIDO</h2>
+                <p>Consultá por WhatsApp y recibí confirmación inmediata. Todo con la velocidad y confianza de nuestra distribuidora.</p>
+            </div>
+        </div>
+
+        <div class="map-section" style="margin-top: 60px; border-radius: 24px; overflow: hidden; border: 1px solid rgba(255,255,255,0.08);">
             <iframe src="https://maps.google.com/maps?q=Gutierrez+1248,+Santa+Fe,+Argentina&t=&z=15&ie=UTF8&iwloc=&output=embed" allowfullscreen="" loading="lazy"></iframe>
         </div>
-        
-        <!-- PIE DE PÁGINA PERSONALIZADO -->
-        <footer style="background: #050505; color: var(--secondary-gray); padding: 40px 20px; text-align: center; border-top: 1px solid var(--border-subtle);">
-            <div style="display: flex; justify-content: center; align-items: center; gap: 40px; margin-bottom: 25px; flex-wrap: wrap;">
-                <a href="https://instagram.com/luto.bebidas" target="_blank" style="color: #999; text-decoration: none; display: flex; align-items: center; gap: 10px; font-size: 0.9rem;"><i class="fab fa-instagram"></i> luto.bebidas</a>
-                <a href="https://wa.me/5493425996090" target="_blank" style="color: #999; text-decoration: none; display: flex; align-items: center; gap: 10px; font-size: 0.9rem;"><i class="fab fa-whatsapp"></i> 3425996090</a>
-            </div>
-            <p style="font-size: 0.7rem; opacity: 0.4; margin: 15px 0; letter-spacing: 1px;">© 2024 Luto Bebidas - Distribuidora Online</p>
-            <div style="font-size: 0.65rem; color: #666; border-top: 1px solid #222; padding-top: 10px;">
-                Desarrollado por <a href="https://instagram.com/antoniniuriel" target="_blank" style="color: #888; text-decoration: none; font-weight: 600; transition: color 0.3s;">Uriel Antonini</a>
-            </div>
-        </footer>
     </div>
 
     <div id="shop-view">
@@ -661,9 +1083,18 @@
         </div>
     </footer>
 
-    <button class="floating-order-btn" onclick="handleFloatingButton()">
-        <i class="fas fa-shopping-bag"></i> <span id="float-btn-text">HACÉ TU PEDIDO</span>
-    </button>
+    <div class="left-mascot" id="left-mascot">
+        <img src="img/mascota-promos.png" alt="Mascota Luto" id="left-mascot-img" class="mascot-img" onerror="this.onerror=null; this.src='https://via.placeholder.com/160x200?text=Mascota'">
+    </div>
+
+    <div class="floating-order-container">
+        <div class="floating-mascot">
+            <img src="img/mascota.png" alt="Mascota Luto" onerror="this.style.display='none';">
+        </div>
+        <button class="floating-order-btn" onclick="handleFloatingButton()">
+            <i class="fas fa-shopping-bag"></i> <span id="float-btn-text">HACÉ TU PEDIDO</span>
+        </button>
+    </div>
 
     <div id="product-popup" class="modal-overlay" onclick="closeModal('product-popup')">
         <div class="modal-box" onclick="event.stopPropagation()">
@@ -750,11 +1181,13 @@
 
         // Inicialización: Cargar datos (normaliza columnas del CSV para tolerar cambios de encabezado)
         function loadProducts() {
-            Papa.parse(SHEET_URL, {
-                download: true,
-                header: true,
-                dynamicTyping: true,
-                complete: function(results) {
+            if (window.loadProductsPromise) return window.loadProductsPromise;
+            window.loadProductsPromise = new Promise((resolve, reject) => {
+                Papa.parse(SHEET_URL, {
+                    download: true,
+                    header: true,
+                    dynamicTyping: true,
+                    complete: function(results) {
                     // Normalizar claves: pasar todos los encabezados a minúsculas sin espacios
                     const parsed = results.data.map((row, idx) => {
                         const normalized = {};
@@ -788,15 +1221,47 @@
 
                     // Filtramos filas sin nombre
                     products = parsed.filter(p => p.name && p.name.length > 0);
-                    renderElaboradosCarousel(); // Renderizar carrusel al cargar
-                    renderFernetSidebar(); // Renderizar sidebar fernet
-                    showHome(); // Iniciamos la app una vez que hay datos
+
+                    // Si la hoja CSV viene vacía o falla (entorno local), usar fallback de ejemplo
+                    if (!products || products.length === 0) {
+                        console.warn('Productos vacíos desde CSV — usando fallback local de ejemplo');
+                        products = [
+                            { id: 'f1', name: 'Fernet + Coca (Pack)', category: 'fernet', img: 'https://via.placeholder.com/200x150?text=Fernet', price: 1200, promoQty:'', promoPrice:'', _raw: {} },
+                            { id: 'c1', name: 'Cerveza Artesanal', category: 'cervezas', img: 'https://via.placeholder.com/200x150?text=Cerveza', price: 450, promoQty:'', promoPrice:'', _raw: {} },
+                            { id: 'v1', name: 'Vino Malbec', category: 'vinos', img: 'https://via.placeholder.com/200x150?text=Vino', price: 900, promoQty:'', promoPrice:'', _raw: {} }
+                        ];
+                    }
+                        window.products = products;
+                        currentList = products.slice();
+                        renderElaboradosCarousel(); // Renderizar carrusel al cargar
+                        showHome(); // Iniciamos la app una vez que hay datos
+                        resolve(products);
                 },
-                error: function(err) {
-                    console.error("Error cargando productos:", err);
-                    alert("Hubo un error cargando los productos. Por favor recarga la página.");
-                }
+                    error: function(err) {
+                        console.error("Error cargando productos:", err);
+                        // No forzamos alerta para no romper la UX; rechazamos la promesa
+                        reject(err);
+                    }
+                });
+
+                // Fallback por timeout: si Papa.parse no completa o devuelve vacío, cargar ejemplos locales
+                setTimeout(() => {
+                    if (!window.products || window.products.length === 0) {
+                        console.warn('Fallback por timeout: poblando productos de ejemplo');
+                        window.products = [
+                            { id: 'f1', name: 'Fernet + Coca (Pack)', category: 'fernet', img: 'https://via.placeholder.com/200x150?text=Fernet', price: 1200, promoQty:'', promoPrice:'', _raw: {} },
+                            { id: 'c1', name: 'Cerveza Artesanal', category: 'cervezas', img: 'https://via.placeholder.com/200x150?text=Cerveza', price: 450, promoQty:'', promoPrice:'', _raw: {} },
+                            { id: 'v1', name: 'Vino Malbec', category: 'vinos', img: 'https://via.placeholder.com/200x150?text=Vino', price: 900, promoQty:'', promoPrice:'', _raw: {} }
+                        ];
+                        products = window.products;
+                        currentList = products.slice();
+                        renderElaboradosCarousel();
+                        // No forzamos showHome para no alterar vista si el usuario está en shop
+                        resolve(window.products);
+                    }
+                }, 1600);
             });
+            return window.loadProductsPromise;
         }
 
         // CARRUSEL
@@ -834,9 +1299,15 @@
             switchView('home-view');
             resetTimer();
         }
-        function showShop(filter = 'todos') {
+        async function showShop(filter = 'todos') {
             switchView('shop-view');
-            renderShop(filter, null); 
+            try {
+                // Esperar la carga de productos (o un timeout seguro)
+                await Promise.race([window.loadProductsPromise || loadProducts(), new Promise(r => setTimeout(r, 1700))]);
+            } catch (e) {
+                console.warn('loadProducts falló o tardó demasiado', e);
+            }
+            renderShop(filter, null);
             clearInterval(timer);
         }
         
@@ -905,6 +1376,16 @@
 
         // TIENDA CON MEZCLA Y BÚSQUEDA
         function renderShop(filter, btn) {
+            // Si no hay productos cargados, poblar con fallback de ejemplo para evitar vistas vacías
+            if (!products || products.length === 0) {
+                console.warn('renderShop: no hay productos, aplicando fallback local');
+                products = [
+                    { id: 'f1', name: 'Fernet + Coca (Pack)', category: 'fernet', img: 'https://via.placeholder.com/200x150?text=Fernet', price: 1200, promoQty:'', promoPrice:'', _raw: {} },
+                    { id: 'c1', name: 'Cerveza Artesanal', category: 'cervezas', img: 'https://via.placeholder.com/200x150?text=Cerveza', price: 450, promoQty:'', promoPrice:'', _raw: {} },
+                    { id: 'v1', name: 'Vino Malbec', category: 'vinos', img: 'https://via.placeholder.com/200x150?text=Vino', price: 900, promoQty:'', promoPrice:'', _raw: {} }
+                ];
+                window.products = products;
+            }
             currentFilter = filter;
             currentPage = 1;
             const container = document.getElementById('products-container');
@@ -932,8 +1413,17 @@
                 list = products.slice();
                 list = sortByName(list);
             } else if (filter === 'promociones-navidenas') {
-                // Mostrar TODOS los productos que tengan "+" en el nombre (combinaciones/elaborados)
-                list = products.filter(p => p.name && p.name.includes('+'));
+                // Mostrar productos con promo o elaborados: + en nombre, promoPrice/promoQty, o categoría promo
+                list = (products || []).filter(p => {
+                    if (!p) return false;
+                    const name = (p.name || '').toString();
+                    const category = (p.category || '').toString().toLowerCase();
+                    const hasPlus = name.includes('+');
+                    const hasPromo = (p.promoPrice && p.promoPrice !== '') || (p.promoQty && p.promoQty !== '');
+                    const isPromoCat = /promo|promoc|oferta|promos/.test(category);
+                    const flag = p.elaborado || p.combinacion || p.is_elaborado;
+                    return hasPlus || hasPromo || isPromoCat || flag;
+                });
                 list = sortByName(list);
             } else {
                 // Comparación de categorías robusta: normalizar a minúsculas y trim
@@ -962,29 +1452,39 @@
             const container = document.getElementById('elaborados-carousel-container');
             if (!container) return;
             
-            // Filtrar productos que tengan "+" en el nombre (combinaciones/elaborados)
-            const elaborados = products.filter(p => p.name && p.name.includes('+'));
+            // Filtrar productos elaborados/promociones: aceptar + en el nombre, promos explícitas o categoría promo
+            const elaborados = (products || []).filter(p => {
+                if (!p) return false;
+                const name = (p.name || '').toString();
+                const category = (p.category || '').toString().toLowerCase();
+                const hasPlus = name.includes('+');
+                const hasPromo = (p.promoPrice && p.promoPrice !== '') || (p.promoQty && p.promoQty !== '');
+                const isPromoCat = /promo|promoc|oferta|promos/.test(category);
+                const flag = p.elaborado || p.combinacion || p.is_elaborado;
+                return hasPlus || hasPromo || isPromoCat || flag;
+            });
             if (elaborados.length === 0) {
                 container.innerHTML = '';
                 return;
             }
             
             container.innerHTML = `
-                <div style="text-align: center; margin-bottom: 15px;">
-                    <h3 class="serif-font" style="color: var(--primary-white); font-size: 1.2rem; letter-spacing: 1px;">🍹 Productos Elaborados</h3>
-                </div>
-                <div style="position: relative; overflow: hidden; width: 100%; padding: 10px 0;">
-                    <div style="display: flex; gap: 15px; animation: scrollCarousel 30s linear infinite; padding: 10px 0;" id="elaborados-carousel">
+                <div style="position: relative; max-width: 1120px; width: 100%; margin: 0 auto 18px;">
+                    <div style="position: relative; overflow: hidden; width: 100%; padding: 6px 0; border-radius: 8px; border: 1px solid rgba(255,255,255,0.04); background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));">
+                        <div style="display: flex; gap: 14px; animation: scrollCarousel 28s linear infinite; padding: 12px;" id="elaborados-carousel">
+                        </div>
+                        <button id="elab-prev" style="position: absolute; left: 6px; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.45); border: 1px solid rgba(255,255,255,0.06); color: #fff; width:34px; height:34px; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer;">◀</button>
+                        <button id="elab-next" style="position: absolute; right: 6px; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.45); border: 1px solid rgba(255,255,255,0.06); color: #fff; width:34px; height:34px; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer;">▶</button>
                     </div>
                 </div>
                 <style>
                     @keyframes scrollCarousel {
                         0% { transform: translateX(0); }
-                        100% { transform: translateX(-100%); }
+                        100% { transform: translateX(-50%); }
                     }
-                    #elaborados-carousel:hover {
-                        animation-play-state: paused;
-                    }
+                    #elaborados-carousel:hover { animation-play-state: paused; }
+                    #elaborados-carousel > div { transition: transform 0.25s ease, box-shadow 0.2s ease; }
+                    #elaborados-carousel > div:hover { transform: translateY(-4px) scale(1.02); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
                 </style>
             `;
             
@@ -1000,7 +1500,7 @@
                 }
                 
                 const card = document.createElement('div');
-                card.style.cssText = 'background: var(--dark-bg-secondary); border: 1px solid var(--border-subtle); border-radius: 4px; padding: 12px; text-align: center; cursor: pointer; transition: all 0.3s; flex-shrink: 0; width: 120px; height: 160px; display: flex; flex-direction: column; justify-content: space-between;';
+                card.style.cssText = 'background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border: 1px solid rgba(255,255,255,0.04); border-radius: 8px; padding: 10px; text-align: center; cursor: pointer; transition: all 0.25s; flex-shrink: 0; width: 130px; height: 160px; display: flex; flex-direction: column; justify-content: space-between;';
                 card.innerHTML = `
                     <img src="${imageSrc}" style="width: 100%; height: 70px; object-fit: contain;" onerror="this.style.display='none';">
                     <div style="font-size: 0.7rem; color: #fff; font-weight: 500; line-height: 1.2; margin: 8px 0; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;">${p.name}</div>
@@ -1013,93 +1513,82 @@
                 
                 carousel.appendChild(card);
             });
-        }
 
-        // FERNET SIDEBAR RENDER
-        let fernetIndex = 0;
-        function renderFernetSidebar() {
-            const sidebar = document.getElementById('fernet-sidebar');
-            const thumbsContainer = document.getElementById('fernet-thumbs');
-            const bottleImg = document.getElementById('fernet-bottle-img');
-            if(!sidebar || !thumbsContainer || !bottleImg) return;
-
-            // Seleccionar solo productos de fernet que tengan promo definida
-            const fernetProducts = products.filter(p => {
-                const c = (p.category || '').toString().trim().toLowerCase();
-                const n = (p.name || '').toString().toLowerCase();
-                const hasPromo = (p.promoQty && p.promoQty !== '') || (p.promoPrice && p.promoPrice !== '');
-                return (c === 'fernet' || n.includes('fernet')) && hasPromo;
-            });
-
-            if (fernetProducts.length === 0) {
-                // si no hay promos, ocultar sidebar discreto
-                sidebar.style.display = 'none';
-                return;
+            // Controles prev/next para desplazar el contenedor (mejorar usabilidad):
+            const elabCarousel = container.querySelector('#elaborados-carousel');
+            const btnPrev = container.querySelector('#elab-prev');
+            const btnNext = container.querySelector('#elab-next');
+            if (elabCarousel && btnPrev && btnNext) {
+                btnPrev.onclick = () => { elabCarousel.scrollBy({left: -200, behavior: 'smooth'}); };
+                btnNext.onclick = () => { elabCarousel.scrollBy({left: 200, behavior: 'smooth'}); };
+                // Pause animation when interacting
+                [elabCarousel, btnPrev, btnNext].forEach(el => {
+                    el.addEventListener('mouseenter', () => elabCarousel.style.animationPlayState = 'paused');
+                    el.addEventListener('mouseleave', () => elabCarousel.style.animationPlayState = 'running');
+                });
             }
-
-            sidebar.style.display = 'flex';
-            // Usar imagen del primer producto como botella si existe
-            const first = fernetProducts[0];
-            const firstImg = first && first.img ? (first.img.startsWith('http') ? first.img : RUTA_IMG + first.img) : 'img/fernet-bottle.png';
-            bottleImg.src = firstImg;
-
-            // Render marcadores alrededor de la botella con imágenes de las promos
-            const markersContainer = document.getElementById('fernet-markers');
-            markersContainer.innerHTML = '';
-
-            const maxMarkers = Math.min(8, fernetProducts.length);
-            const radius = 90; // radio en px para los marcadores
-
-            for (let i = 0; i < maxMarkers; i++) {
-                const p = fernetProducts[i];
-                const angle = (i / maxMarkers) * Math.PI * 2 - Math.PI / 2; // iniciar arriba
-                const x = 50 + (Math.cos(angle) * radius) / markersContainer.clientWidth * 100;
-                const y = 50 + (Math.sin(angle) * radius) / markersContainer.clientHeight * 100;
-
-                const marker = document.createElement('div');
-                marker.className = 'fernet-marker';
-                marker.style.left = x + '%';
-                marker.style.top = y + '%';
-                marker.title = p.name;
-
-                const img = document.createElement('img');
-                img.src = p.img && p.img.length ? (p.img.startsWith('http') ? p.img : RUTA_IMG + p.img) : 'https://via.placeholder.com/48';
-                marker.appendChild(img);
-
-                marker.onclick = (e) => {
-                    e.stopPropagation();
-                    // Detener animación momentáneamente para destacar la promo
-                    bottleImg.style.animation = 'none';
-                    setTimeout(() => bottleImg.style.animation = '', 200);
-                    bottleImg.src = img.src;
-                    // resaltar marker
-                    document.querySelectorAll('.fernet-marker').forEach(m => m.style.borderColor = 'rgba(255,255,255,0.06)');
-                    marker.style.borderColor = 'var(--primary-white)';
-                    // mostrar tienda filtrada en fernet
-                    showShop('fernet');
-                };
-
-                markersContainer.appendChild(marker);
-            }
+            // Mostrar burbuja en la mascota izquierda cuando inicia el carrusel
+            // posicionar la mascota izquierda junto al inicio del carrusel
+            if (typeof positionLeftMascot === 'function') positionLeftMascot();
         }
 
-        function highlightFernetThumb(i) {
-            document.querySelectorAll('.fernet-thumb').forEach((el, idx) => el.classList.toggle('active', idx === i));
+        // Small scroll-based movement for the bottle in the servicio section
+        function updateBottleOnScroll() {
+            const bottle = document.getElementById('bottle-img');
+            const sticky = document.getElementById('bottle-sticky');
+            if (!bottle || !sticky) return;
+            const rect = sticky.getBoundingClientRect();
+            const windowH = window.innerHeight;
+            // factor -1..1 based on how central the sticky element is
+            const centerFactor = (rect.top + rect.height/2 - windowH/2) / (windowH/2);
+            const translateY = centerFactor * -6; // px
+            const rotate = centerFactor * 6; // degrees
+            bottle.style.transform = `translateY(${translateY}px) rotate(${rotate}deg)`;
         }
 
-        function fernetNext() {
-            const thumbs = document.querySelectorAll('.fernet-thumb');
-            if(thumbs.length === 0) return;
-            fernetIndex = (fernetIndex + 1) % thumbs.length;
-            thumbs[fernetIndex].click();
+        // Posicionar la mascota izquierda apuntando al inicio del carrusel
+        function positionLeftMascot() {
+            const left = document.getElementById('left-mascot');
+            const carouselContainer = document.getElementById('elaborados-carousel-container');
+            const productsGrid = document.getElementById('products-container');
+            const img = document.getElementById('left-mascot-img');
+            if (!left) return;
+            // elegir un target: carrusel si existe, sino grid de productos, sino shop-view
+            const target = (carouselContainer && carouselContainer.innerHTML.trim().length>0) ? carouselContainer : (productsGrid ? productsGrid : document.getElementById('shop-view'));
+            if (!target) return;
+            // Asegurar que la mascota sea visible
+            left.style.display = 'block';
+            // calcular posición relativa al carrusel
+            const rect = target.getBoundingClientRect();
+            const mW = img ? img.getBoundingClientRect().width : 160;
+            const mH = img ? img.getBoundingClientRect().height : 160;
+            const top = window.scrollY + rect.top + (rect.height/2) - (mH/2 || 0);
+            // posicionar completamente a la izquierda del inicio del target para que no lo tape
+            const leftPos = Math.max(8, Math.floor(window.scrollX + rect.left - mW - 12));
+            // evitar solapamiento con el botón flotante inferior: si queda muy bajo, elevar
+            const bottomGap = (window.scrollY + window.innerHeight) - (top + mH);
+            let finalTop = top;
+            if (bottomGap < 140) finalTop = Math.max(window.scrollY + 40, top - (140 - bottomGap));
+            left.style.position = 'absolute';
+            left.style.left = `${leftPos}px`;
+            left.style.top = `${finalTop}px`;
+            // Forzar reflow y activar animación de entrada
+            left.classList.remove('enter');
+            left.classList.remove('mascot-bounce');
+            void left.offsetWidth;
+            left.classList.add('enter');
+            left.classList.add('mascot-bounce');
+            // Forzar visibilidad inline en caso de estilos iniciales
+            left.style.opacity = '1';
+            left.style.transform = 'translateX(0) scale(1)';
         }
+        // Recalcular al redimensionar/scroll
+        window.addEventListener('resize', () => { if (typeof positionLeftMascot === 'function') positionLeftMascot(); });
+        window.addEventListener('scroll', () => { if (typeof positionLeftMascot === 'function') positionLeftMascot(); }, {passive:true});
 
-        function fernetPrev() {
-            const thumbs = document.querySelectorAll('.fernet-thumb');
-            if(thumbs.length === 0) return;
-            fernetIndex = (fernetIndex - 1 + thumbs.length) % thumbs.length;
-            thumbs[fernetIndex].click();
-        }
+        window.addEventListener('scroll', () => {
+            requestAnimationFrame(updateBottleOnScroll);
+        }, {passive:true});
         
         function renderShopPage() {
             const container = document.getElementById('products-container');
@@ -1107,6 +1596,10 @@
             if (!container) return;
             container.innerHTML = '';
             paginationContainer.innerHTML = '';
+            if (!currentList || currentList.length === 0) {
+                container.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: #ccc; padding: 40px;">No hay productos disponibles en este momento. Intentá recargar la página.</p>';
+                return;
+            }
             
             const startIdx = (currentPage - 1) * productsPerPage;
             const endIdx = startIdx + productsPerPage;
@@ -1145,6 +1638,15 @@
                 
                 paginationContainer.appendChild(paginationDiv);
             }
+            // Asegurar que la mascota izquierda se posicione después de renderizar items
+            setTimeout(() => { if (typeof positionLeftMascot === 'function') positionLeftMascot(); }, 80);
+            // Forzar visibilidad de tarjetas en caso de que la animación no las muestre
+            setTimeout(() => {
+                document.querySelectorAll('.product-card').forEach(c => {
+                    c.style.opacity = '1';
+                    c.style.animation = 'none';
+                });
+            }, 120);
         }
         
         function nextPage() {
@@ -1454,8 +1956,29 @@
             cart = []; updateCartUI(); showHome();
         }
 
+        function createConfetti() {
+            const confetti = document.getElementById('confetti');
+            if (!confetti) return;
+            const colors = ['#ffffff', '#cde7ff', '#8cc8ff'];
+            for (let i = 0; i < 48; i++) {
+                const piece = document.createElement('div');
+                piece.className = 'confetti-piece';
+                piece.style.left = Math.random() * 100 + '%';
+                piece.style.top = Math.random() * -20 + '%';
+                piece.style.background = colors[i % colors.length];
+                piece.style.width = `${8 + Math.random() * 10}px`;
+                piece.style.height = `${14 + Math.random() * 12}px`;
+                piece.style.animationDuration = `${6 + Math.random() * 6}s`;
+                piece.style.animationDelay = `${Math.random() * 4}s`;
+                piece.style.opacity = 0.8;
+                piece.style.transform = `rotate(${Math.random() * 360}deg)`;
+                confetti.appendChild(piece);
+            }
+        }
+
         // INIT
         window.onload = function() {
+            createConfetti();
             loadProducts(); // Cargar productos al inicio
         };
     </script>
