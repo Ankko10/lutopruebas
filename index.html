@@ -694,16 +694,46 @@
         let currentFilter = 'todos';
         let currentList = [];
 
-        // Inicialización: Cargar datos
+        // Inicialización: Cargar datos (normaliza columnas del CSV para tolerar cambios de encabezado)
         function loadProducts() {
             Papa.parse(SHEET_URL, {
                 download: true,
                 header: true,
                 dynamicTyping: true,
                 complete: function(results) {
-                    products = results.data;
-                    // Filtramos filas vacías por si acaso
-                    products = products.filter(p => p.id && p.name);
+                    // Normalizar claves: pasar todos los encabezados a minúsculas sin espacios
+                    const parsed = results.data.map((row, idx) => {
+                        const normalized = {};
+                        Object.keys(row || {}).forEach(k => {
+                            if (!k) return;
+                            const key = k.toString().trim().toLowerCase();
+                            normalized[key] = row[k];
+                        });
+
+                        // Mapear campos comunes con tolerancia a nombres distintos
+                        const name = (normalized.name || normalized.nombre || normalized.producto || '').toString().trim();
+                        const category = (normalized.category || normalized.categoria || normalized.cat || '').toString().trim().toLowerCase();
+                        const img = (normalized.img || normalized.image || normalized.imagen || '').toString().trim();
+                        const price = parseFloat(normalized.price || normalized.precio || normalized.valor || 0) || 0;
+                        const promoQty = normalized.promoqty || normalized.promo_qty || normalized.promo || normalized.oferta || '';
+                        const promoPrice = normalized.promoprice || normalized.promo_price || normalized.precio_oferta || '';
+                        const id = (normalized.id || normalized.key || name || idx).toString();
+
+                        return {
+                            id: id,
+                            name: name,
+                            category: category,
+                            img: img || '',
+                            price: price,
+                            promoQty: promoQty,
+                            promoPrice: promoPrice,
+                            // conservar fila original por si acaso
+                            _raw: row
+                        };
+                    });
+
+                    // Filtramos filas sin nombre
+                    products = parsed.filter(p => p.name && p.name.length > 0);
                     renderElaboradosCarousel(); // Renderizar carrusel al cargar
                     showHome(); // Iniciamos la app una vez que hay datos
                 },
@@ -825,20 +855,20 @@
             const container = document.getElementById('products-container');
             if (!container) return;
             container.innerHTML = '';
-            
+
             // Limpiar buscador si se cambia de categoría
             const searchInput = document.getElementById('search-input');
-            if (searchInput && btn) { 
-                searchInput.value = ''; 
+            if (searchInput && btn) {
+                searchInput.value = '';
             }
-            
-            if(btn) {
+
+            if (btn) {
                 document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
             } else if (filter === 'todos') {
-                 document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
-                 const allBtn = document.querySelector('.cat-btn'); 
-                 if(allBtn) allBtn.classList.add('active');
+                document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+                const allBtn = document.querySelector('.cat-btn');
+                if (allBtn) allBtn.classList.add('active');
             }
 
             let list = [];
@@ -850,22 +880,25 @@
                 // Mostrar TODOS los productos que tengan "+" en el nombre (combinaciones/elaborados)
                 list = products.filter(p => p.name && p.name.includes('+'));
                 list = sortByName(list);
-            } else if (filter === 'sin-alcohol' || filter === 'jugos-energizantes') {
-                list = products.filter(p => p.category === filter || (filter === 'sin-alcohol' && p.category === 'jugos-energizantes'));
-                list = products.filter(p => p.category === filter);
-                list = sortByName(list);
             } else {
-                list = products.filter(p => p.category === filter);
+                // Comparación de categorías robusta: normalizar a minúsculas y trim
+                list = products.filter(p => {
+                    const c = (p.category || '').toString().trim().toLowerCase();
+                    if (filter === 'sin-alcohol') {
+                        return c === 'sin-alcohol' || c === 'jugos-energizantes';
+                    }
+                    return c === (filter || '').toString().trim().toLowerCase();
+                });
                 list = sortByName(list);
             }
-            
+
             currentList = list;
-            
+
             // Renderizar carrusel de elaborados si estamos en shop-view
             if (filter === 'todos') {
                 renderElaboradosCarousel();
             }
-            
+
             renderShopPage();
         }
         
