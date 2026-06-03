@@ -2,198 +2,1288 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Luto Bebidas</title>
-    <link rel="stylesheet" href="styles.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Luto Bebidas - Distribuidora</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+
+    <style>
+        /* --- ESTILOS GENERALES --- */
+        :root {
+            --primary-white: #ffffff;
+            --secondary-gray: #cccccc;
+            --border-subtle: #2a2a2a;
+            --dark-bg-main: #121212; 
+            --dark-bg-secondary: #1a1a1a;
+            --text-main: #f0f0f0;
+            --neon-glow: rgba(255, 255, 255, 0.5);
+            --accent-green: #25D366;
+        }
+        
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        html { scroll-behavior: smooth; }
+
+        body { 
+            font-family: 'Montserrat', sans-serif; 
+            margin: 0; padding: 0;
+            color: var(--text-main);
+            background-color: var(--dark-bg-main);
+            overflow-x: hidden;
+            line-height: 1.4;
+        }
+
+        h1, h2, h3, .serif-font { font-family: 'Playfair Display', serif; }
+        button { font-family: 'Montserrat', sans-serif; }
+
+        /* --- ANIMACIONES --- */
+
+        @keyframes fadeSlideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* HEADER */
+        header {
+            background-color: rgba(18, 18, 18, 0.98); 
+            padding: 0.8rem 1.2rem; 
+            position: sticky; top: 0; z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.8); 
+            border-bottom: 1px solid var(--border-subtle);
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        
+        .brand-container { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+
+        /* ESTILOS GORRITO */
+        .logo-wrapper {
+            position: relative; 
+            width: 35px; height: 35px;
+        }
+        .logo-img { 
+            width: 100%; height: 100%; 
+            object-fit: cover; border-radius: 50%; 
+            border: 1px solid var(--primary-white);
+            position: relative; z-index: 1; 
+        }
+        .santa-hat-img {
+            display: none;
+            position: absolute;
+            top: -22px;   
+            left: 2px;    
+            width: 55px;  
+            height: auto;
+            z-index: 5; 
+            transform: rotate(15deg); 
+            pointer-events: none; 
+            filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.8)); 
+        }
+        
+        .brand-text { display: flex; align-items: baseline; gap: 3px; }
+        .brand-main { font-size: 1.1rem; color: var(--primary-white); letter-spacing: 1px; text-transform: uppercase; font-weight: 700; }
+        .brand-tm { 
+            font-size: 0.65rem; color: var(--secondary-gray); text-transform: uppercase; font-weight: 600; 
+            vertical-align: top; position: relative; top: -3px; letter-spacing: 0.5px;
+        }
+
+        .nav-actions { display: flex; gap: 15px; align-items: center; }
+        .cart-btn {
+            background: transparent; color: var(--primary-white); 
+            border: 1px solid var(--primary-white); padding: 5px 12px; 
+            border-radius: 30px; font-weight: 600; cursor: pointer; transition: 0.3s;
+            display: flex; align-items: center; gap: 6px; font-size: 0.8rem;
+        }
+        .menu-toggle { font-size: 1.4rem; color: var(--primary-white); cursor: pointer; display: block; }
+
+        /* CARRUSEL */
+        .hero-section { 
+            position: relative; 
+            height: 55vh; 
+            min-height: 350px; 
+            overflow: hidden; 
+            background-color: #000;
+        }
+        .carousel-slide {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            opacity: 0; transition: opacity 0.8s ease;
+            background-size: cover; background-position: center;
+            display: flex; align-items: center; justify-content: center; 
+            pointer-events: none;
+        }
+        .carousel-slide.active { opacity: 1; pointer-events: auto; }
+        .overlay-dark { position: absolute; top:0; left:0; width:100%; height:100%; background: linear-gradient(to top, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.02) 60%, rgba(0,0,0,0.03) 100%); }
+        
+        .slide-content {
+            position: relative; z-index: 2; text-align: center; color: var(--primary-white);
+            padding: 0 20px;
+        }
+        .slide-title { 
+            font-size: 2.8rem; margin: 0; line-height: 1; 
+            text-transform: uppercase; font-weight: 700; letter-spacing: 2px;
+            text-shadow: 0 4px 10px rgba(0,0,0,0.8);
+        }
+        .slide-subtitle { 
+            font-size: 0.9rem; color: #eee; margin: 15px auto 25px auto; 
+            font-weight: 500; text-shadow: 0 2px 4px rgba(0,0,0,0.8); 
+            max-width: 80%;
+        }
+        
+        .btn-mono { 
+            display: inline-block; padding: 12px 30px; 
+            background: var(--primary-white); color: var(--dark-bg-main); 
+            font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; font-size: 0.75rem;
+            border: none; cursor: pointer; border-radius: 2px; text-decoration: none;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+
+        /* CONTROLES CARRUSEL */
+        .carousel-control {
+            position: absolute; top: 50%; transform: translateY(-50%);
+            background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.2);
+            color: white; font-size: 1.5rem; width: 40px; height: 40px;
+            border-radius: 50%; cursor: pointer; z-index: 10;
+            display: flex; align-items: center; justify-content: center;
+            transition: 0.3s; backdrop-filter: blur(2px);
+        }
+        .carousel-control:hover { background: rgba(255,255,255,0.2); }
+        .prev-btn { left: 15px; }
+        .next-btn { right: 15px; }
+
+        /* FEATURES BAR */
+        .features-bar {
+            background-color: var(--dark-bg-secondary); 
+            padding: 20px 10px;
+            display: grid; 
+            grid-template-columns: repeat(3, 1fr); 
+            gap: 10px;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+        .feature-item { 
+            text-align: center; cursor: pointer; 
+            display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
+            padding: 5px 0;
+        }
+        .feature-icon-circle {
+            width: 50px; height: 50px;
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            margin-bottom: 10px;
+            background: rgba(255,255,255,0.02);
+        }
+        .feature-icon { font-size: 1.2rem; color: var(--primary-white); }
+        .feature-title { color: var(--primary-white); font-size: 0.7rem; text-transform: uppercase; font-weight: 600; letter-spacing: 1px; }
+
+        /* SECCIONES */
+        .info-section { display: flex; flex-direction: column; border-bottom: 1px solid var(--border-subtle); }
+        .info-image { height: 220px; background-size: cover; background-position: center; }
+        .info-text-container { padding: 30px 20px; text-align: center; }
+        .bg-light { background-color: #e5e5e5; color: #111; }
+        .bg-dark { background-color: var(--dark-bg-main); color: var(--text-main); }
+        
+        .section-tag { font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px; font-size: 0.7rem; opacity: 0.6; display: block; }
+        .section-heading { font-size: 1.8rem; margin: 0 0 12px 0; }
+        .section-desc { font-size: 0.9rem; line-height: 1.6; margin-bottom: 20px; opacity: 0.85; }
+        
+        .btn-outline-smart {
+             display: inline-block; padding: 10px 25px;
+             background: transparent; border: 1px solid currentColor;
+             font-weight: 600; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 1px;
+             cursor: pointer; text-decoration: none; border-radius: 2px;
+        }
+
+        /* MAPA */
+        .map-section { height: 250px; width: 100%; filter: grayscale(100%); opacity: 0.8; }
+        iframe { width: 100%; height: 100%; border: 0; }
+
+        /* VISTA HOME */
+        #home-view {
+            background-image: 
+                radial-gradient(ellipse at center, transparent 0%, rgba(0, 0, 0, 0.05) 100%),
+                url('https://images.unsplash.com/photo-1516634547200-d4f68cdfb3a3?w=1600&h=900&fit=crop');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            min-height: 100vh;
+        }
+
+        /* VISTA TIENDA */
+        #shop-view { 
+            display: none; 
+            padding-top: 20px; 
+            min-height: 80vh;
+            background-color: var(--dark-bg-main);
+            background-image: 
+                radial-gradient(ellipse at center, transparent 0%, rgba(0, 0, 0, 0.05) 100%),
+                url('https://images.unsplash.com/photo-1516634547200-d4f68cdfb3a3?w=1600&h=900&fit=crop');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+
+        /* BARRA DE BÚSQUEDA */
+        .search-wrapper {
+            max-width: 600px;
+            margin: 0 auto 20px auto;
+            position: relative;
+            padding: 0 15px;
+            z-index: 10;
+        }
+        .search-input {
+            width: 100%;
+            padding: 12px 15px 12px 45px;
+            background: var(--dark-bg-secondary);
+            border: 1px solid var(--border-subtle);
+            border-radius: 30px;
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.95rem;
+            outline: none;
+            transition: all 0.3s;
+        }
+        .search-input:focus {
+            border-color: var(--primary-white);
+            box-shadow: 0 0 15px rgba(255,255,255,0.15);
+            background: #222;
+        }
+        .search-icon {
+            position: absolute;
+            left: 32px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #777;
+            font-size: 1rem;
+        }
+
+        .categories-nav { 
+            display: flex; gap: 8px; overflow-x: auto; padding: 10px 15px; 
+            background: var(--dark-bg-secondary); margin-bottom: 15px; 
+            border-bottom: 1px solid var(--border-subtle); scrollbar-width: none; 
+            position: relative; z-index: 2; 
+        }
+        .categories-nav::-webkit-scrollbar { display: none; }
+        .cat-btn { 
+            background: transparent; border: 1px solid var(--border-subtle); color: var(--secondary-gray); 
+            padding: 8px 16px; border-radius: 4px; cursor: pointer; white-space: nowrap; font-size: 0.8rem; 
+            text-transform: uppercase; font-weight: 600;
+        }
+        .cat-btn.active { background: var(--primary-white); color: var(--dark-bg-main); border-color: var(--primary-white); }
+        
+        .products-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 0 12px 100px 12px; position: relative; z-index: 2; }
+        
+        /* TARJETAS */
+        .product-card { 
+            background: var(--dark-bg-secondary); 
+            border: 1px solid var(--border-subtle); 
+            border-radius: 4px; 
+            overflow: hidden; 
+            text-align: center; 
+            padding-bottom: 12px; 
+            cursor: pointer; 
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            opacity: 0; 
+            animation: fadeSlideUp 0.5s ease forwards;
+        }
+        .product-card:hover {
+            transform: scale(1.02);
+            border-color: #fff;
+            box-shadow: 0 0 15px var(--neon-glow);
+            z-index: 5;
+        }
+        .product-img { width: 100%; height: 150px; object-fit: contain; padding: 15px; background: #fff; }
+        .product-info { padding: 12px 8px 0 8px; }
+        .product-name { font-weight: 500; font-size: 0.85rem; color: #fff; min-height: 34px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; margin-bottom: 5px; }
+        .price { font-weight: 700; font-size: 1rem; color: var(--primary-white); display: block; margin: 6px 0 10px 0; }
+        .promo-badge { background-color: #e74c3c; color: white; font-size: 0.6rem; padding: 2px 5px; border-radius: 2px; margin-left: 5px; font-weight: 700; vertical-align: middle; }
+        .add-cart-btn { background: transparent; color: var(--primary-white); border: 1px solid rgba(255,255,255,0.3); padding: 8px 0; width: 100%; cursor: pointer; font-weight: 600; border-radius: 2px; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; }
+        .add-cart-btn:hover { background: var(--primary-white); color: #000; border-color: var(--primary-white); }
+
+        /* VISTA CARRITO */
+        #cart-view { display: none; padding: 20px; min-height: 80vh; }
+        .cart-item { display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--border-subtle); padding: 15px 0; }
+        .cart-item-img { width:45px; height:45px; object-fit:contain; background:#fff; border-radius:4px; padding:2px; }
+        .cart-remove-btn { background:none; border:1px solid #444; color:#ff5555; font-size: 1rem; width: 30px; height: 30px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; margin-left: 10px; }
+
+        /* FOOTER */
+        footer { background: #050505; color: var(--secondary-gray); padding: 50px 20px; text-align: center; border-top: 1px solid var(--border-subtle); }
+        .footer-logo { height: 40px; margin-bottom: 25px; opacity: 0.6; filter: grayscale(100%); }
+        .footer-contact { margin: 20px 0; display: flex; flex-direction: column; gap: 15px; align-items: center; }
+        .contact-link { display: flex; align-items: center; gap: 10px; color: #999; text-decoration: none; font-size: 0.9rem; }
+        .copyright { font-size: 0.7rem; opacity: 0.4; margin-top: 30px; letter-spacing: 1px; }
+
+        /* ESTILOS PARA TU CRÉDITO DE DESARROLLADOR */
+        .developer-credit {
+            margin-top: 15px;
+            font-size: 0.65rem;
+            color: #666;
+            border-top: 1px solid #222;
+            padding-top: 10px;
+            display: inline-block;
+        }
+        .developer-credit a {
+            color: #888;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+        .developer-credit a:hover {
+            color: var(--primary-white); 
+            text-decoration: underline;
+        }
+
+        /* FLOATING BTN */
+        .floating-order-btn {
+            position: fixed; bottom: 25px; left: 5%; width: 90%;
+            background-color: var(--primary-white); color: var(--dark-bg-main);
+            border: none; padding: 16px; border-radius: 4px;
+            font-weight: 700; box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            cursor: pointer; z-index: 9990; 
+            display: flex; justify-content: center; align-items: center; gap: 12px;
+            font-size: 0.9rem; text-transform: uppercase; letter-spacing: 2px;
+        }
+        
+        /* MOBILE - Botón circular en lado derecho */
+        @media (max-width: 768px) {
+            .floating-order-btn {
+                width: 60px;
+                height: 60px;
+                padding: 0;
+                border-radius: 50%;
+                right: 20px;
+                left: auto;
+                bottom: 25px;
+                gap: 0;
+            }
+            
+            #float-btn-text {
+                display: none;
+            }
+            
+            .floating-order-btn i {
+                font-size: 1.5rem;
+            }
+        }
+
+        /* SIDEBAR */
+        .sidebar-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 2000; display: none; backdrop-filter: blur(2px); }
+        .sidebar { 
+            position: fixed; top: 0; left: -85%; width: 85%; height: 100%; 
+            background: #111; z-index: 2001; transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1); padding: 40px 30px;
+            border-right: 1px solid var(--border-subtle);
+        }
+        .sidebar.active { left: 0; }
+        .sidebar-links { list-style: none; padding: 0; margin-top: 50px; }
+        .sidebar-links li { margin-bottom: 25px; }
+        .sidebar-links a { color: #ccc; text-decoration: none; font-size: 1.1rem; font-weight: 500; display: block; letter-spacing: 1px; }
+
+        /* MODALES */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 10000; display: none; justify-content: center; align-items: center; backdrop-filter: blur(5px); opacity: 1; transition: opacity 0.3s ease-out; }
+        .modal-overlay.closing { opacity: 0; pointer-events: none; }
+        .modal-box { background: #1a1a1a; padding: 35px 25px; border-radius: 8px; width: 90%; max-width: 400px; text-align: center; border: 1px solid var(--border-subtle); box-shadow: 0 20px 50px rgba(0,0,0,0.5); max-height: 90vh; overflow-y: auto; }
+        .modal-option-label { display:flex; align-items:center; gap:12px; margin-bottom:12px; padding:16px; background:rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius:4px; text-align:left; color: #fff; font-size: 0.95rem; cursor:pointer; }
+        .modal-btn { width: 100%; padding: 16px; margin-top: 20px; border: none; font-weight: 700; border-radius: 4px; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px; cursor: pointer; }
+        .btn-confirm { background: var(--primary-white); color: var(--dark-bg-main); }
+        .btn-cancel { background: transparent; color: #888; border: 1px solid #444; }
+        
+        .popup-img { width: 150px; height: 150px; object-fit: contain; background: white; border-radius: 8px; padding: 10px; margin-bottom: 15px; }
+        .popup-title { font-size: 1.4rem; color: white; margin-bottom: 5px; line-height: 1.2; }
+        .popup-price { font-size: 1.6rem; color: white; font-weight: 700; display: block; margin-bottom: 15px; }
+        .popup-desc { color: #aaa; margin-bottom: 20px; font-size: 0.9rem; }
+
+        .form-input { width: 100%; padding: 14px; background: #222; border: 1px solid #444; color: white; border-radius: 4px; margin-bottom: 10px; font-family: 'Montserrat', sans-serif; }
+        .alias-container { display: flex; justify-content: space-between; align-items: center; background: #2a2a2a; padding: 10px; border-radius: 4px; margin-top: 10px; border: 1px solid #444; }
+        .alias-text { font-weight: 700; color: white; letter-spacing: 1px; }
+        .copy-btn { background: #444; border: none; color: white; padding: 5px 10px; border-radius: 2px; font-size: 0.7rem; cursor: pointer; }
+
+        /* MEDIA QUERY */
+        @media (min-width: 769px) {
+            .menu-toggle { display: none; }
+            .hero-section { height: 500px; max-width: 900px; margin: 20px auto; border: 1px solid var(--border-subtle); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+            .carousel-slide { background-size: cover; justify-content: flex-start; padding-left: 5%; }
+            .overlay-dark { background: linear-gradient(to right, rgba(0,0,0,0.08) 0%, rgba(0,0,0,0.05) 30%, rgba(0,0,0,0.03) 100%); }
+            .slide-content { text-align: left; max-width: 450px; background: rgba(20, 20, 20, 0.6); padding: 30px; border-radius: 8px; backdrop-filter: blur(5px); border: 1px solid rgba(255,255,255,0.1); }
+            .slide-title { font-size: 3.5rem; text-shadow: none; }
+            .slide-subtitle { margin: 15px 0 25px 0; max-width: 100%; }
+            .features-bar { gap: 80px; padding: 40px 0; max-width: 1200px; margin: 0 auto; background: transparent; border: none; }
+            .info-section { flex-direction: row; }
+            .info-image { height: auto; min-height: 500px; width: 50%; }
+            .info-text-container { width: 50%; display: flex; flex-direction: column; justify-content: center; padding: 60px; text-align: left; }
+            .products-grid { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
+            .floating-order-btn { width: auto; right: 40px; left: auto; bottom: 40px; padding: 18px 40px; }
+        }
+    </style>
 </head>
 <body>
 
-<header class="header">
-    <nav class="navbar">
-        <h1 class="logo">Luto Bebidas</h1>
-        <ul class="nav-links">
-            <li><a href="#inicio">Inicio</a></li>
-            <li><a href="#productos">Productos</a></li>
-            <li><a href="#nosotros">Nosotros</a></li>
-            <li><a href="#contacto">Contacto</a></li>
+    <div class="sidebar-overlay" id="sidebar-overlay" onclick="toggleSidebar()"></div>
+    <div class="sidebar" id="sidebar">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:30px;">
+            <span class="brand-sub" style="font-size:0.9rem; color:#666;">MENÚ</span>
+            <div style="font-size:1.5rem; color:var(--primary-white); cursor:pointer;" onclick="toggleSidebar()">×</div>
+        </div>
+        <ul class="sidebar-links">
+            <li><a href="#" onclick="showHome(); toggleSidebar()">INICIO</a></li>
+            <li><a href="#" onclick="showShop(); toggleSidebar()">PRODUCTOS</a></li>
+            <li><a href="#section-servicios" onclick="showHome(); toggleSidebar()">SERVICIOS</a></li>
+            <li><a href="#section-promociones" onclick="showHome(); toggleSidebar()">PROMOCIONES</a></li>
         </ul>
-    </nav>
-</header>
+    </div>
 
-<section id="inicio" class="hero">
-    <h2>Las mejores bebidas, al mejor precio</h2>
-    <p>Calidad, sabor y entrega rápida</p>
-    <a href="#productos" class="btn">Ver productos</a>
-</section>
+    <header>
+        <div class="brand-container" onclick="showHome()">
+            <div class="logo-wrapper">
+                <img src="img/gorro.png" alt="Gorro Navidad" class="santa-hat-img">
+                <img src="img/logo-luto.png" alt="Luto" class="logo-img" onerror="this.src='https://via.placeholder.com/50/333/fff?text=L'">
+            </div>
+            <div class="brand-text">
+                <span class="brand-main">LUTO</span>
+                <span class="brand-tm">ONLINE</span>
+            </div>
+        </div>
+        <div class="nav-actions">
+            <button class="cart-btn" onclick="showCart()">
+                <i class="fas fa-shopping-cart"></i> <span id="cart-count">0</span>
+            </button>
+            <i class="fas fa-bars menu-toggle" onclick="toggleSidebar()"></i>
+        </div>
+    </header>
 
-<section id="productos" class="productos">
-    <h2>Nuestros Productos</h2>
+    <div id="home-view">
+        <section class="hero-section" id="hero-carousel">
+            <button class="carousel-control prev-btn" onclick="prevSlide()">❮</button>
+            <button class="carousel-control next-btn" onclick="nextSlide()">❯</button>
 
-    <div class="grid">
-        <div class="card">
-            <img src="https://via.placeholder.com/250" alt="Bebida">
-            <h3>Cerveza</h3>
-            <p>$2500</p>
-            <button>Agregar</button>
+            <div class="carousel-slide active" style="background-image: url('img/portada1.jpg');">
+                <div class="overlay-dark"></div>
+                <div class="slide-content">
+                    <h2 class="slide-title serif-font">Catálogo</h2>
+                    <p class="slide-subtitle">Lo mejor en bebidas, directo a tu puerta.</p>
+                    <button class="btn-mono" onclick="showShop()">VER TIENDA</button>
+                </div>
+            </div>
+            <div class="carousel-slide" style="background-image: url('img/portada3.jpg');">
+                <div class="overlay-dark"></div>
+                <div class="slide-content">
+                    <h2 class="slide-title serif-font">Eventos</h2>
+                    <p class="slide-subtitle">Cubrimos tu fiesta grande o pequeña.</p>
+                    <a href="#section-servicios" class="btn-mono">CONTRATAR</a>
+                </div>
+            </div>
+            <div class="carousel-slide" style="background-image: url('img/portada2.jpg');">
+                <div class="overlay-dark"></div>
+                <div class="slide-content">
+                    <h2 class="slide-title serif-font">Promos</h2>
+                    <p class="slide-subtitle">Ahorrá con nuestras ofertas semanales.</p>
+                    <button class="btn-mono" onclick="showShop()">VER OFERTAS</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="features-bar">
+            <div class="feature-item" onclick="showShop()">
+                <div class="feature-icon-circle">
+                    <i class="fas fa-wine-bottle feature-icon"></i>
+                </div>
+                <div class="feature-title">TIENDA</div>
+            </div>
+            <div class="feature-item" onclick="scrollToSection('section-servicios')">
+                <div class="feature-icon-circle">
+                    <i class="fas fa-concierge-bell feature-icon"></i>
+                </div>
+                <div class="feature-title">SERVICIOS</div>
+            </div>
+            <div class="feature-item" onclick="scrollToSection('section-promociones')">
+                <div class="feature-icon-circle">
+                    <i class="fas fa-percentage feature-icon"></i>
+                </div>
+                <div class="feature-title">PROMOS</div>
+            </div>
+        </section>
+
+        <div id="section-servicios" class="info-section bg-light">
+             <div class="info-text-container">
+                <span class="section-tag">PERSONALIZADO</span>
+                <h2 class="section-heading serif-font">Eventos & Delivery</h2>
+                <p class="section-desc">Nos encargamos de que la bebida no falte. Ofrecemos consignación, enfriado y logística para reuniones de cualquier tamaño.</p>
+                <div style="margin-top:10px;">
+                    <a href="https://wa.me/5493425996090" target="_blank" class="btn-outline-smart">CONSULTAR</a>
+                </div>
+            </div>
+            <div class="info-image" style="background-image: url('img/portada3.jpg');"></div>
         </div>
 
-        <div class="card">
-            <img src="https://via.placeholder.com/250" alt="Bebida">
-            <h3>Vodka</h3>
-            <p>$6000</p>
-            <button>Agregar</button>
+        <div id="section-promociones" class="info-section bg-dark">
+            <div class="info-image" style="background-image: url('img/portada2.jpg'); order: -1;"></div>
+            <div class="info-text-container">
+                <span class="section-tag">OPORTUNIDAD</span>
+                <h2 class="section-heading serif-font">Ofertas Semanales</h2>
+                <p class="section-desc">Seleccionamos los mejores precios para que disfrutes sin gastar de más. Packs ideales para el finde.</p>
+                <div style="margin-top:10px;">
+                    <button class="btn-mono" onclick="renderShop('promociones-navidenas', null); showShop()">VER PROMOS</button>
+                </div>
+            </div>
         </div>
 
-        <div class="card">
-            <img src="https://via.placeholder.com/250" alt="Bebida">
-            <h3>Fernet</h3>
-            <p>$7000</p>
-            <button>Agregar</button>
+        <div class="map-section">
+            <iframe src="https://maps.google.com/maps?q=Gutierrez+1248,+Santa+Fe,+Argentina&t=&z=15&ie=UTF8&iwloc=&output=embed" allowfullscreen="" loading="lazy"></iframe>
+        </div>
+        
+        <!-- PIE DE PÁGINA PERSONALIZADO -->
+        <footer style="background: #050505; color: var(--secondary-gray); padding: 40px 20px; text-align: center; border-top: 1px solid var(--border-subtle);">
+            <div style="display: flex; justify-content: center; align-items: center; gap: 40px; margin-bottom: 25px; flex-wrap: wrap;">
+                <a href="https://instagram.com/luto.bebidas" target="_blank" style="color: #999; text-decoration: none; display: flex; align-items: center; gap: 10px; font-size: 0.9rem;"><i class="fab fa-instagram"></i> luto.bebidas</a>
+                <a href="https://wa.me/5493425996090" target="_blank" style="color: #999; text-decoration: none; display: flex; align-items: center; gap: 10px; font-size: 0.9rem;"><i class="fab fa-whatsapp"></i> 3425996090</a>
+            </div>
+            <p style="font-size: 0.7rem; opacity: 0.4; margin: 15px 0; letter-spacing: 1px;">© 2024 Luto Bebidas - Distribuidora Online</p>
+            <div style="font-size: 0.65rem; color: #666; border-top: 1px solid #222; padding-top: 10px;">
+                Desarrollado por <a href="https://instagram.com/antoniniuriel" target="_blank" style="color: #888; text-decoration: none; font-weight: 600; transition: color 0.3s;">Uriel Antonini</a>
+            </div>
+        </footer>
+    </div>
+
+    <div id="shop-view">
+        <div class="container" style="max-width: 1200px; margin: 0 auto;">
+             <div class="search-wrapper">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" id="search-input" class="search-input" placeholder="Buscar bebidas..." onkeyup="handleSearch()">
+             </div>
+
+             <h2 class="serif-font" style="text-align:center; margin-bottom:20px; color: var(--primary-white); font-size:1.8rem; letter-spacing: 1px;">Catálogo</h2>
+             
+             <!-- CARRUSEL DE PRODUCTOS ELABORADOS -->
+             <div id="elaborados-carousel-container" style="margin-bottom: 30px;"></div>
+             
+            <div class="categories-nav">
+                <button class="cat-btn active" onclick="renderShop('todos', this)">Todos</button>
+                <button class="cat-btn" onclick="renderShop('promociones-navidenas', this)">🔥 Promos</button>
+                <button class="cat-btn" onclick="renderShop('fernet', this)">Fernet</button>
+                <button class="cat-btn" onclick="renderShop('aperitivos', this)">Aperitivos</button>
+                <button class="cat-btn" onclick="renderShop('gins', this)">Gins</button>
+                <button class="cat-btn" onclick="renderShop('licores', this)">Licores</button>
+                <button class="cat-btn" onclick="renderShop('whisky', this)">Whisky</button>
+                <button class="cat-btn" onclick="renderShop('champagne', this)">Champagne</button>
+                <button class="cat-btn" onclick="renderShop('cervezas', this)">Cervezas</button>
+                <button class="cat-btn" onclick="renderShop('sidras', this)">Sidras</button>
+                <button class="cat-btn" onclick="renderShop('vodka', this)">Vodka</button>
+                <button class="cat-btn" onclick="renderShop('vinos', this)">Vinos</button>
+                <button class="cat-btn" onclick="renderShop('sin-alcohol', this)">Sin Alcohol</button>
+                <button class="cat-btn" onclick="renderShop('jugos-energizantes', this)">Jugos/Energizantes</button>
+                <button class="cat-btn" onclick="renderShop('varios', this)">Varios</button>
+            </div>
+            <div id="products-container" class="products-grid"></div>
+            <div id="shop-pagination-container"></div>
         </div>
     </div>
-</section>
 
-<section id="nosotros" class="nosotros">
-    <h2>Sobre Nosotros</h2>
-    <p>
-        Somos Luto Bebidas, un emprendimiento dedicado a la venta de bebidas
-        con atención personalizada y precios accesibles.
-    </p>
-</section>
+    <div id="cart-modal" class="modal-overlay">
+        <div class="modal-box" style="max-width: 600px; max-height: 80vh; overflow-y: auto;">
+            <h2 class="serif-font" style="border-bottom: 1px solid var(--border-subtle); padding-bottom: 15px; margin-bottom: 25px; color: var(--primary-white); font-size:1.6rem;">Tu Pedido</h2>
+            <div id="cart-list-container"></div>
+            <div style="text-align: right; margin-top: 30px; font-size: 1.5rem; color: var(--primary-white);">
+                Total: <strong id="final-total">$0</strong>
+            </div>
+            <button onclick="handleCheckout()" class="modal-btn btn-confirm" style="margin-top: 20px;">CONTINUAR CON COMPRA</button>
+            <button onclick="closeModal('cart-modal')" class="modal-btn btn-cancel" style="margin-top: 10px;">Cerrar</button>
+        </div>
+    </div>
 
-<section id="contacto" class="contacto">
-    <h2>Contacto</h2>
-    <p>📍 Tu ciudad</p>
-    <p>📞 +54 9 11 1234 5678</p>
-    <a class="btn whatsapp" href="https://wa.me/5491112345678" target="_blank">
-        Contactar por WhatsApp
-    </a>
-</section>
+    <footer>
+        <img src="img/logo-luto.png" alt="Logo Luto" class="footer-logo" onerror="this.style.display='none'">
+        <div class="footer-contact">
+            <a href="https://instagram.com/luto.bebidas" target="_blank" class="contact-link">
+                <i class="fab fa-instagram"></i> luto.bebidas
+            </a>
+            <a href="https://wa.me/5493425996090" target="_blank" class="contact-link">
+                <i class="fab fa-whatsapp"></i> 5493425996090
+            </a>
+        </div>
+        <p class="copyright">© 2024 Luto Bebidas - Distribuidora Online</p>
+        
+        <div class="developer-credit">
+            Desarrollado por <a href="https://instagram.com/antoniniuriel" target="_blank">Uriel Antonini</a>
+        </div>
+    </footer>
 
-<footer class="footer">
-    <p>© 2026 Luto Bebidas - Todos los derechos reservados</p>
-</footer>
+    <button class="floating-order-btn" onclick="handleFloatingButton()">
+        <i class="fas fa-shopping-bag"></i> <span id="float-btn-text">HACÉ TU PEDIDO</span>
+    </button>
 
-<script src="script.js"></script>
+    <div id="product-popup" class="modal-overlay" onclick="closeModal('product-popup')">
+        <div class="modal-box" onclick="event.stopPropagation()">
+            <img id="popup-img" src="" class="popup-img">
+            <div id="popup-title" class="popup-title serif-font"></div>
+            <span id="popup-price" class="popup-price"></span>
+            <p id="popup-desc" class="popup-desc"></p>
+            <button id="popup-add-btn" class="modal-btn btn-confirm">AGREGAR AL CARRITO</button>
+            <button class="modal-btn btn-cancel" onclick="closeModal('product-popup')">Cerrar</button>
+        </div>
+    </div>
+
+    <div id="promo-modal" class="modal-overlay">
+        <div class="modal-box">
+            <h3 class="serif-font" style="font-size:1.5rem; margin-bottom:20px; color:#fff;">¿Qué buscas?</h3>
+            <div style="display: flex; flex-direction: column; gap: 12px; text-align: center;">
+                <button class="modal-btn btn-confirm" onclick="closePromoAndExecute(showAllProducts)">🛍️ Ver Productos</button>
+                <button class="modal-btn btn-confirm" onclick="closePromoAndExecute(showPromociones)">⭐ Promociones</button>
+                <button class="modal-btn btn-confirm" onclick="closePromoAndExecute(showBebidasEspeciales)">🍹 Bebidas Especiales</button>
+            </div>
+            <button class="modal-btn btn-cancel" onclick="closePromoAndExecute(null)" style="margin-top: 15px;">Cerrar</button>
+        </div>
+    </div>
+
+    <div id="delivery-modal" class="modal-overlay">
+        <div class="modal-box">
+            <h3 class="serif-font" style="font-size:1.5rem; margin-bottom:20px; color:#fff;">Entrega</h3>
+            <div style="text-align:left; margin: 20px 0;">
+                <label class="modal-option-label">
+                    <input type="radio" name="delivery" value="delivery" checked onclick="toggleAddressField(true)"> 🛵 Envío a Domicilio
+                </label>
+                <label class="modal-option-label">
+                    <input type="radio" name="delivery" value="retiro" onclick="toggleAddressField(false)"> 🏪 Retiro en Local
+                </label>
+            </div>
+            <button class="modal-btn btn-confirm" onclick="nextStepToPayment()">SIGUIENTE</button>
+            <button class="modal-btn btn-cancel" onclick="closeModal('delivery-modal')">Cancelar</button>
+        </div>
+    </div>
+
+    <div id="payment-modal" class="modal-overlay">
+        <div class="modal-box">
+            <h3 class="serif-font" style="font-size:1.5rem; margin-bottom:20px; color:#fff;">Finalizar Compra</h3>
+            
+            <div style="text-align:left; margin-bottom:15px; border-bottom:1px solid #333; padding-bottom:15px;">
+                <input type="text" id="customer-name" class="form-input" placeholder="Tu Nombre">
+                <div id="address-field-container">
+                    <input type="text" id="customer-address" class="form-input" placeholder="Tu Dirección">
+                </div>
+            </div>
+
+            <div style="text-align:left; margin: 20px 0;">
+                <h4 style="color:#aaa; font-size:0.8rem; text-transform:uppercase; margin-bottom:10px;">Método de Pago</h4>
+                <label onclick="togglePaymentFields('efectivo')" class="modal-option-label">
+                    <input type="radio" name="payment" value="efectivo" checked> 💵 Efectivo
+                </label>
+                
+                <label onclick="togglePaymentFields('transferencia')" class="modal-option-label">
+                    <input type="radio" name="payment" value="transferencia"> 📱 Transferencia
+                </label>
+                </div>
+            <button class="modal-btn btn-confirm" onclick="finalizeOrder()">ENVIAR PEDIDO</button>
+            <button class="modal-btn btn-cancel" onclick="closeModal('payment-modal')">Atrás</button>
+        </div>
+    </div>
+
+    <script>
+        // CONFIG
+        const phoneNumber = "5493425996090";
+        // Enlace del CSV que me pasaste:
+        const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTuWNsipZA0w9IX9Opr7u6vYw0BcWHqvpPk6rCi-4rpsJUpB1dGoG5duncWJNAQlyZB_GtP57DfOnnn/pub?output=csv";
+        const RUTA_IMG = "img/"; 
+
+        // PRODUCTOS (Se llenan desde el CSV)
+        let products = [];
+        let cart = [];
+        let deliveryType = "";
+        
+        // PAGINACIÓN
+        let currentPage = 1;
+        let productsPerPage = 12;
+        let currentFilter = 'todos';
+        let currentList = [];
+
+        // Inicialización: Cargar datos
+        function loadProducts() {
+            Papa.parse(SHEET_URL, {
+                download: true,
+                header: true,
+                dynamicTyping: true,
+                complete: function(results) {
+                    products = results.data;
+                    // Filtramos filas vacías por si acaso
+                    products = products.filter(p => p.id && p.name);
+                    renderElaboradosCarousel(); // Renderizar carrusel al cargar
+                    showHome(); // Iniciamos la app una vez que hay datos
+                },
+                error: function(err) {
+                    console.error("Error cargando productos:", err);
+                    alert("Hubo un error cargando los productos. Por favor recarga la página.");
+                }
+            });
+        }
+
+        // CARRUSEL
+        let touchStartX = 0;
+        let touchEndX = 0;
+        const carousel = document.getElementById('hero-carousel');
+        
+        if (carousel) {
+            carousel.addEventListener('touchstart', e => touchStartX = e.changedTouches[0].screenX, {passive: true});
+            carousel.addEventListener('touchend', e => {
+                touchEndX = e.changedTouches[0].screenX;
+                if (touchEndX < touchStartX - 50) nextSlide();
+                if (touchEndX > touchStartX + 50) prevSlide();
+                resetTimer();
+            }, {passive: true});
+        }
+
+        let slideIndex = 0;
+        let timer;
+        const slides = document.querySelectorAll('.carousel-slide');
+        
+        function showSlide(n) {
+            slides.forEach(s => s.classList.remove('active'));
+            slideIndex = (n + slides.length) % slides.length;
+            if (slides[slideIndex]) slides[slideIndex].classList.add('active');
+        }
+        function nextSlide() { showSlide(slideIndex + 1); resetTimer(); }
+        function prevSlide() { showSlide(slideIndex - 1); resetTimer(); }
+        function resetTimer() { clearInterval(timer); timer = setInterval(nextSlide, 5000); }
+        
+        if(slides.length > 0) resetTimer();
+
+        // NAVEGACIÓN
+        function showHome() {
+            switchView('home-view');
+            resetTimer();
+        }
+        function showShop(filter = 'todos') {
+            switchView('shop-view');
+            renderShop(filter, null); 
+            clearInterval(timer);
+        }
+        
+        function showAllProducts() {
+            showShop('todos');
+        }
+        
+        function showPromociones() {
+            showShop('promociones-navidenas');
+        }
+        
+        function showBebidasEspeciales() {
+            switchView('shop-view');
+            currentFilter = 'especiales';
+            currentPage = 1;
+            
+            // Ordenar productos por precio descendente y mostrar los más caros
+            let sorted = products.slice().sort((a, b) => {
+                const priceA = parseFloat(a.price) || 0;
+                const priceB = parseFloat(b.price) || 0;
+                return priceB - priceA;
+            });
+            
+            currentList = sorted;
+            renderShopPage();
+            clearInterval(timer);
+        }
+        function showCart() {
+            renderCart();
+            document.getElementById('cart-modal').style.display = 'flex';
+        }
+        
+        function handleCheckout() {
+            if (cart.length === 0) {
+                alert('Tu carrito está vacío');
+                return;
+            }
+            closeModal('cart-modal');
+            openDeliveryModal();
+        }
+        function switchView(id) {
+            ['home-view','shop-view','product-detail-view'].forEach(v => {
+                const el = document.getElementById(v);
+                if (el) el.style.display = 'none';
+            });
+            const activeEl = document.getElementById(id);
+            if (activeEl) activeEl.style.display = 'block';
+            window.scrollTo(0,0);
+            updateFloatingButton();
+        }
+        function toggleSidebar() {
+            const sb = document.getElementById('sidebar');
+            const ov = document.getElementById('sidebar-overlay');
+            if (sb) sb.classList.toggle('active');
+            if (ov && sb) ov.style.display = sb.classList.contains('active') ? 'block' : 'none';
+        }
+        function scrollToSection(id) {
+            const el = document.getElementById(id);
+            if(el) el.scrollIntoView({behavior:'smooth'});
+        }
+
+        // --- FUNCIÓN PARA ORDENAR ALFABÉTICAMENTE ---
+        function sortByName(array) {
+            return array.sort((a, b) => (a.name || '').localeCompare(b.name || ''));
+        }
+
+        // TIENDA CON MEZCLA Y BÚSQUEDA
+        function renderShop(filter, btn) {
+            currentFilter = filter;
+            currentPage = 1;
+            const container = document.getElementById('products-container');
+            if (!container) return;
+            container.innerHTML = '';
+            
+            // Limpiar buscador si se cambia de categoría
+            const searchInput = document.getElementById('search-input');
+            if (searchInput && btn) { 
+                searchInput.value = ''; 
+            }
+            
+            if(btn) {
+                document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+            } else if (filter === 'todos') {
+                 document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+                 const allBtn = document.querySelector('.cat-btn'); 
+                 if(allBtn) allBtn.classList.add('active');
+            }
+
+            let list = [];
+            // Copiamos el array para no modificar el original al filtrar
+            if (filter === 'todos') {
+                list = products.slice();
+                list = sortByName(list);
+            } else if (filter === 'promociones-navidenas') {
+                // Mostrar TODOS los productos que tengan "+" en el nombre (combinaciones/elaborados)
+                list = products.filter(p => p.name && p.name.includes('+'));
+                list = sortByName(list);
+            } else if (filter === 'sin-alcohol' || filter === 'jugos-energizantes') {
+                list = products.filter(p => p.category === filter || (filter === 'sin-alcohol' && p.category === 'jugos-energizantes'));
+                list = products.filter(p => p.category === filter);
+                list = sortByName(list);
+            } else {
+                list = products.filter(p => p.category === filter);
+                list = sortByName(list);
+            }
+            
+            currentList = list;
+            
+            // Renderizar carrusel de elaborados si estamos en shop-view
+            if (filter === 'todos') {
+                renderElaboradosCarousel();
+            }
+            
+            renderShopPage();
+        }
+        
+        // CARRUSEL DE PRODUCTOS ELABORADOS
+        function renderElaboradosCarousel() {
+            const container = document.getElementById('elaborados-carousel-container');
+            if (!container) return;
+            
+            // Filtrar productos que tengan "+" en el nombre (combinaciones/elaborados)
+            const elaborados = products.filter(p => p.name && p.name.includes('+'));
+            if (elaborados.length === 0) {
+                container.innerHTML = '';
+                return;
+            }
+            
+            container.innerHTML = `
+                <div style="text-align: center; margin-bottom: 15px;">
+                    <h3 class="serif-font" style="color: var(--primary-white); font-size: 1.2rem; letter-spacing: 1px;">🍹 Productos Elaborados</h3>
+                </div>
+                <div style="position: relative; overflow: hidden; width: 100%; padding: 10px 0;">
+                    <div style="display: flex; gap: 15px; animation: scrollCarousel 30s linear infinite; padding: 10px 0;" id="elaborados-carousel">
+                    </div>
+                </div>
+                <style>
+                    @keyframes scrollCarousel {
+                        0% { transform: translateX(0); }
+                        100% { transform: translateX(-100%); }
+                    }
+                    #elaborados-carousel:hover {
+                        animation-play-state: paused;
+                    }
+                </style>
+            `;
+            
+            const carousel = container.querySelector('#elaborados-carousel');
+            
+            // Duplicar elementos para efecto infinito
+            const allCards = [...elaborados, ...elaborados];
+            
+            allCards.forEach(p => {
+                let imageSrc = p.img;
+                if (!imageSrc.startsWith('http')) {
+                    imageSrc = RUTA_IMG + imageSrc;
+                }
+                
+                const card = document.createElement('div');
+                card.style.cssText = 'background: var(--dark-bg-secondary); border: 1px solid var(--border-subtle); border-radius: 4px; padding: 12px; text-align: center; cursor: pointer; transition: all 0.3s; flex-shrink: 0; width: 120px; height: 160px; display: flex; flex-direction: column; justify-content: space-between;';
+                card.innerHTML = `
+                    <img src="${imageSrc}" style="width: 100%; height: 70px; object-fit: contain;" onerror="this.style.display='none';">
+                    <div style="font-size: 0.7rem; color: #fff; font-weight: 500; line-height: 1.2; margin: 8px 0; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;">${p.name}</div>
+                    <div style="font-size: 0.85rem; font-weight: 700; color: var(--primary-white);">$${p.price}</div>
+                `;
+                
+                card.onmouseover = () => card.style.borderColor = '#fff';
+                card.onmouseout = () => card.style.borderColor = 'var(--border-subtle)';
+                card.onclick = () => openProductDetail(p.id);
+                
+                carousel.appendChild(card);
+            });
+        }
+        
+        function renderShopPage() {
+            const container = document.getElementById('products-container');
+            const paginationContainer = document.getElementById('shop-pagination-container');
+            if (!container) return;
+            container.innerHTML = '';
+            paginationContainer.innerHTML = '';
+            
+            const startIdx = (currentPage - 1) * productsPerPage;
+            const endIdx = startIdx + productsPerPage;
+            const pageItems = currentList.slice(startIdx, endIdx);
+            
+            pageItems.forEach((p, index) => {
+                createProductCard(p, index, container);
+            });
+            
+            // Agregar controles de paginación
+            const totalPages = Math.ceil(currentList.length / productsPerPage);
+            if (totalPages > 1) {
+                const paginationDiv = document.createElement('div');
+                paginationDiv.style.cssText = 'display: flex; justify-content: center; gap: 10px; margin-top: 30px; padding-bottom: 20px;';
+                
+                if (currentPage > 1) {
+                    const prevBtn = document.createElement('button');
+                    prevBtn.textContent = '← Anterior';
+                    prevBtn.style.cssText = 'padding: 12px 20px; background: var(--primary-white); color: var(--dark-bg-main); border: none; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 0.9rem;';
+                    prevBtn.onclick = prevPage;
+                    paginationDiv.appendChild(prevBtn);
+                }
+                
+                const pageInfo = document.createElement('span');
+                pageInfo.textContent = `Página ${currentPage} de ${totalPages}`;
+                pageInfo.style.cssText = 'padding: 12px 20px; color: #ccc; font-weight: bold;';
+                paginationDiv.appendChild(pageInfo);
+                
+                if (currentPage < totalPages) {
+                    const nextBtn = document.createElement('button');
+                    nextBtn.textContent = 'Siguiente →';
+                    nextBtn.style.cssText = 'padding: 12px 20px; background: var(--primary-white); color: var(--dark-bg-main); border: none; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 0.9rem;';
+                    nextBtn.onclick = nextPage;
+                    paginationDiv.appendChild(nextBtn);
+                }
+                
+                paginationContainer.appendChild(paginationDiv);
+            }
+        }
+        
+        function nextPage() {
+            const totalPages = Math.ceil(currentList.length / productsPerPage);
+            if (currentPage < totalPages) {
+                currentPage++;
+                renderShopPage();
+                window.scrollTo(0, document.getElementById('products-container').offsetTop - 100);
+            }
+        }
+        
+        function prevPage() {
+            if (currentPage > 1) {
+                currentPage--;
+                renderShopPage();
+                window.scrollTo(0, document.getElementById('products-container').offsetTop - 100);
+            }
+        }
+
+        // FUNCIÓN DE BÚSQUEDA GLOBAL
+        function handleSearch() {
+            const query = document.getElementById('search-input').value.toLowerCase();
+            const container = document.getElementById('products-container');
+            currentPage = 1;
+
+            if(query.trim() === '') {
+                document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+                const allBtn = document.querySelector('.cat-btn'); 
+                if(allBtn) allBtn.classList.add('active');
+                
+                let list = products.slice();
+                list = sortByName(list);
+                currentList = list;
+                renderShopPage();
+                return;
+            }
+
+            document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+
+            const results = products.filter(p => p.name.toLowerCase().includes(query));
+
+            if(results.length === 0) {
+                container.innerHTML = '<p style="text-align:center; color:#999; grid-column: 1 / -1; padding:20px;">No encontramos bebidas con ese nombre 😢</p>';
+                return;
+            }
+
+            currentList = results;
+            renderShopPage();
+        }
+
+        // Helper para crear tarjetas (reutilizable)
+        function createProductCard(p, index, container) {
+            const card = document.createElement('div');
+            card.className = 'product-card';
+            card.style.animationDelay = `${index * 0.05}s`;
+            
+            let promoBadge = '';
+            if(p.promoQty) {
+                promoBadge = `<span class="promo-badge">${p.promoQty}x $${p.promoPrice}</span>`;
+            }
+
+            // Detectar si la imagen es una URL externa (http) o local (nombre de archivo)
+            let imageSrc = p.img;
+            if (!imageSrc.startsWith('http')) {
+                imageSrc = RUTA_IMG + imageSrc;
+            }
+
+            card.innerHTML = `
+                <img src="${imageSrc}" class="product-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                <div class="product-img-fallback" style="display:none; width: 100%; height: 150px; background: linear-gradient(135deg, #FF6B6B, #FF8E72); justify-content: center; align-items: center; font-size: 60px; color: white;">
+                    <i class="fas fa-wine-glass"></i>
+                </div>
+                <div class="product-info">
+                    <div class="product-name">${p.name}</div>
+                    <span class="price">$${p.price} ${promoBadge}</span>
+                    <button class="add-cart-btn">AGREGAR</button>
+                </div>`;
+            
+            const imgEl = card.querySelector('.product-img');
+            const titleEl = card.querySelector('.product-name');
+            const btnEl = card.querySelector('.add-cart-btn');
+            
+            imgEl.onclick = () => openProductDetail(p.id);
+            titleEl.onclick = () => openProductDetail(p.id);
+            btnEl.onclick = (e) => {
+                e.stopPropagation(); 
+                addToCart(p.id);
+            };
+
+            container.appendChild(card);
+        }
+
+        // DETALLE DE PRODUCTO (MODAL)
+        function openProductDetail(id) {
+            const p = products.find(i => i.id === id);
+            if(!p) return;
+
+            // Detectar URL externa o local
+            let imageSrc = p.img;
+            if (!imageSrc.startsWith('http')) {
+                imageSrc = RUTA_IMG + imageSrc;
+            }
+
+            document.getElementById('popup-img').src = imageSrc;
+            document.getElementById('popup-title').innerText = p.name;
+            document.getElementById('popup-price').innerText = `$${p.price}`;
+            
+            let desc = `Disfruta de la mejor calidad con ${p.name}.`;
+            if(p.promoQty) {
+                desc += ` <br><br>🔥 <strong>OFERTA: Llevando ${p.promoQty} o más pagas $${p.promoPrice} c/pack</strong>`;
+            }
+            document.getElementById('popup-desc').innerHTML = desc;
+            
+            const btn = document.getElementById('popup-add-btn');
+            btn.onclick = () => {
+                addToCart(p.id);
+                closeModal('product-popup');
+            };
+
+            document.getElementById('product-popup').style.display = 'flex';
+        }
+
+        // CARRITO
+        function addToCart(id) {
+            const p = products.find(i => i.id === id);
+            const exist = cart.find(i => i.id === id);
+            if(exist) exist.qty++; else cart.push({...p, qty:1});
+            updateCartUI();
+        }
+        
+        function removeFromCart(index) {
+            if (cart[index].qty > 1) {
+                cart[index].qty--;
+            } else {
+                cart.splice(index, 1);
+            }
+            updateCartUI();
+            renderCart();
+        }
+
+        function updateCartQty(index, change) {
+            if (cart[index]) {
+                const newQty = cart[index].qty + change;
+                if (newQty > 0) {
+                    cart[index].qty = newQty;
+                } else {
+                    cart.splice(index, 1);
+                }
+                updateCartUI();
+                renderCart();
+            }
+        }
+
+        function updateCartUI() {
+            const count = cart.reduce((a, b) => a + b.qty, 0);
+            const badge = document.getElementById('cart-count');
+            if(badge) badge.innerText = count;
+            updateFloatingButton();
+        }
+        
+        function calculateItemTotal(item) {
+            if (item.promoQty && item.promoPrice && item.qty >= item.promoQty) {
+                const bundles = Math.floor(item.qty / item.promoQty);
+                const remainder = item.qty % item.promoQty;
+                return (bundles * item.promoPrice) + (remainder * item.price);
+            }
+            return item.price * item.qty;
+        }
+
+        function renderCart() {
+            const con = document.getElementById('cart-list-container');
+            if (!con) return;
+            con.innerHTML = '';
+            let total = 0;
+            if(cart.length === 0) {
+                con.innerHTML = '<p style="text-align:center;color:#777;">Carrito vacío</p>';
+                document.getElementById('final-total').innerText = '$0';
+                return;
+            }
+            cart.forEach((item, idx) => {
+                const itemTotal = calculateItemTotal(item);
+                total += itemTotal;
+                
+                let priceText = `$${item.price}`;
+                if(item.promoQty && item.qty >= item.promoQty) {
+                    priceText += ` <span style="color:#25D366; font-size:0.7rem;">(Promo aplicada)</span>`;
+                }
+
+                // Detectar imagen en carrito
+                let imageSrc = item.img;
+                if (!imageSrc.startsWith('http')) {
+                    imageSrc = RUTA_IMG + imageSrc;
+                }
+
+                con.innerHTML += `
+                    <div class="cart-item">
+                        <div style="display:flex; align-items:center; gap:10px; flex:1;">
+                            <img src="${imageSrc}" class="cart-item-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="cart-item-fallback" style="display:none; width: 50px; height: 50px; background: #FF8E72; justify-content: center; align-items: center; color: white; font-size: 24px; border-radius: 4px;">
+                                <i class="fas fa-glass"></i>
+                            </div>
+                            <div style="flex:1;">
+                                <div style="font-weight:600; color:white;">${item.name}</div>
+                                <div style="font-size:0.8rem; color:#aaa;">${priceText}</div>
+                            </div>
+                        </div>
+                        <div style="display:flex; align-items:center; gap:8px; margin-left:10px;">
+                            <button onclick="updateCartQty(${idx}, -1)" style="width:30px; height:30px; padding:0; background: #333; color: white; border: 1px solid #555; border-radius: 3px; cursor: pointer; font-weight: bold;">−</button>\n                            <div style="color:white; font-weight:600; min-width:30px; text-align:center;">${item.qty}</div>\n                            <button onclick="updateCartQty(${idx}, 1)" style="width:30px; height:30px; padding:0; background: #333; color: white; border: 1px solid #555; border-radius: 3px; cursor: pointer; font-weight: bold;">+</button>\n                            <div style="color:white; font-weight:600; min-width:60px; text-align:right;">$${itemTotal}</div>\n                            <button onclick="removeFromCart(${idx})" class="cart-remove-btn">×</button>
+                        </div>
+                    </div>`;
+            });
+            document.getElementById('final-total').innerText = '$' + total;
+        }
+
+        // FLOTANTE & MODALES
+        function handleFloatingButton() {
+            if(cart.length === 0) {
+                openPromoModal();
+            } else {
+                showCart();
+            }
+        }
+        
+        function openPromoModal() {
+            document.getElementById('promo-modal').style.display = 'flex';
+        }
+        function updateFloatingButton() {
+            const txt = document.getElementById('float-btn-text');
+            if (txt) {
+                if(cart.length === 0) txt.innerText = "HACÉ TU PEDIDO";
+                else txt.innerText = "FINALIZAR COMPRA (" + cart.reduce((a,b)=>a+b.qty,0) + ")";
+            }
+        }
+        function openDeliveryModal() { document.getElementById('delivery-modal').style.display = 'flex'; }
+        function closeModal(id) { 
+            const modal = document.getElementById(id);
+            modal.classList.add('closing');
+            setTimeout(() => {
+                modal.style.display = 'none';
+                modal.classList.remove('closing');
+            }, 300);
+        }
+        
+        function closePromoAndExecute(callback) {
+            const modal = document.getElementById('promo-modal');
+            modal.classList.add('closing');
+            setTimeout(() => {
+                modal.style.display = 'none';
+                modal.classList.remove('closing');
+                if (callback) callback();
+            }, 350);
+        }
+        
+        function nextStepToPayment() {
+            const opts = document.getElementsByName('delivery');
+            for(let o of opts) if(o.checked) deliveryType = o.value;
+            closeModal('delivery-modal');
+            document.getElementById('payment-modal').style.display = 'flex';
+        }
+
+        function toggleAddressField(show) {
+            const el = document.getElementById('address-field-container');
+            if(el) el.style.display = show ? 'block' : 'none';
+        }
+
+        function togglePaymentFields(method) {
+            // Ya no hay info extra que mostrar, solo guardamos el estado visual si fuera necesario
+        }
+        
+        // CHECKOUT
+        function finalizeOrder() {
+            const nameEl = document.getElementById('customer-name');
+            const name = nameEl ? nameEl.value : '';
+            if(!name) return alert("Por favor ingresa tu nombre");
+
+            const opts = document.getElementsByName('payment');
+            let pay = 'efectivo';
+            for(let o of opts) if(o.checked) pay = o.value;
+            
+            let total = 0;
+            let msg = `Hola *Luto Bebidas*, soy ${name}. Pedido:%0A`;
+            
+            cart.forEach(i => {
+                const itemTotal = calculateItemTotal(i);
+                total += itemTotal;
+                msg += `- ${i.name} (${i.qty}): $${itemTotal}%0A`;
+            });
+            
+            msg += `*TOTAL: $${total}*%0A`;
+            msg += `Entrega: ${deliveryType === 'delivery' ? '🛵 Domicilio' : '🏪 Retiro'}`;
+            
+            if(deliveryType === 'delivery') {
+                const addrEl = document.getElementById('customer-address');
+                const address = addrEl ? addrEl.value : '';
+                if(!address) return alert("Ingresa tu dirección para el envío");
+                msg += `%0ADirección: ${address}`;
+            }
+
+            if(pay === 'efectivo') {
+                msg += `%0A💵 Pago: Efectivo`;
+            } else {
+                msg += `%0A📱 Pago: Transferencia`;
+            }
+
+            window.open(`https://wa.me/${phoneNumber}?text=${msg}`, '_blank');
+            closeModal('payment-modal');
+            cart = []; updateCartUI(); showHome();
+        }
+
+        // INIT
+        window.onload = function() {
+            loadProducts(); // Cargar productos al inicio
+        };
+    </script>
 </body>
 </html>
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: Arial, sans-serif;
-}
-
-body {
-    background-color: #f4f4f4;
-    color: #333;
-}
-
-/* Navbar */
-.header {
-    background: #111;
-    position: sticky;
-    top: 0;
-}
-
-.navbar {
-    display: flex;
-    justify-content: space-between;
-    padding: 15px 30px;
-    align-items: center;
-}
-
-.logo {
-    color: #fff;
-}
-
-.nav-links {
-    list-style: none;
-    display: flex;
-    gap: 20px;
-}
-
-.nav-links a {
-    color: #fff;
-    text-decoration: none;
-}
-
-/* Hero */
-.hero {
-    height: 80vh;
-    background: linear-gradient(rgba(0,0,0,.6), rgba(0,0,0,.6)),
-    url("https://via.placeholder.com/1200") center/cover;
-    color: white;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-}
-
-.btn {
-    background: #e63946;
-    color: white;
-    padding: 12px 20px;
-    margin-top: 15px;
-    text-decoration: none;
-    border-radius: 5px;
-}
-
-/* Productos */
-.productos {
-    padding: 60px 20px;
-    text-align: center;
-}
-
-.grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 25px;
-    margin-top: 30px;
-}
-
-.card {
-    background: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 5px 10px rgba(0,0,0,.1);
-}
-
-.card img {
-    width: 100%;
-    border-radius: 5px;
-}
-
-.card button {
-    margin-top: 10px;
-    padding: 10px;
-    width: 100%;
-    border: none;
-    background: #111;
-    color: white;
-    cursor: pointer;
-}
-
-/* Nosotros y contacto */
-.nosotros, .contacto {
-    padding: 60px 20px;
-    text-align: center;
-}
-
-.whatsapp {
-    background: #25d366;
-}
-
-/* Footer */
-.footer {
-    background: #111;
-    color: white;
-    text-align: center;
-    padding: 15px;
-}
-document.querySelectorAll(".card button").forEach(boton => {
-    boton.addEventListener("click", () => {
-        alert("Producto agregado (demo)");
-    });
-});
